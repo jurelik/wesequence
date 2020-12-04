@@ -8,12 +8,15 @@ export default function Room() {
   const [sounds, setSounds] = useState({});
 
   useEffect(() => {
-    setupSocket(socket);
-    setupWebAudio(setContext, setSounds);
+    const setup = async () => {
+      await setupSocket(socket);
+      await setupWebAudio(setContext, setSounds);
+    }
+
+    setup();
   }, [])
 
   const playSound = () => {
-    console.log(context)
     let source = context.createBufferSource();
     source.buffer = sounds.kick;
     source.connect(context.destination);
