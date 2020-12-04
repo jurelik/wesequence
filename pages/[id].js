@@ -1,14 +1,28 @@
 import { useState, useEffect } from 'react';
-import socketSetup from 'utils/socketSetup';
+import setupSocket from 'utils/setupSocket';
+import setupWebAudio from 'utils/setupWebAudio';
 
 export default function Room() {
   let socket;
+  const [context, setContext] = useState(null);
+  const [sounds, setSounds] = useState({});
 
   useEffect(() => {
-    socketSetup(socket);
+    setupSocket(socket);
+    setupWebAudio(setContext, setSounds);
   }, [])
 
+  const playSound = () => {
+    console.log(context)
+    let source = context.createBufferSource();
+    source.buffer = sounds.kick;
+    source.connect(context.destination);
+    source.start();
+  }
+
   return (
-    <div>hello world</div>
+    <div>
+      <button onClick={playSound}>play/stop</button>
+    </div>
   )
 }

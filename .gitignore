@@ -38,3 +38,4 @@ tags
 tags.lock
 tags.temp
 *.swp
+/public/kick.wav
