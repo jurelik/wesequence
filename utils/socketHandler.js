@@ -1,10 +1,25 @@
-const socketHandler = (socket) => {
-  socket.onmessage = (e) => {
+const socketHandler = (socket, context, state, setState) => {
+  socket.onmessage = async (e) => {
     const data = JSON.parse(e.data);
 
     switch (data.type) {
       case 'init':
-        console.log(data.msg);
+        if (data.sounds.length > 0) {
+          setState({ ...state, resources: data.sounds });
+
+          //Load sounds
+          const sounds = {};
+          for (const sound of data.sounds) {
+            const sample = await fetch(sound[1]);
+            const arraybuffer = await sample.arrayBuffer();
+            const audiobuffer = await context.decodeAudioData(arraybuffer);
+            sounds[sound[0]] = audiobuffer;
+          }
+          setState({ ...state, sounds });
+        }
+        break;
+      case 'test':
+        console.log('test')
         break;
       default:
         console.log('default');

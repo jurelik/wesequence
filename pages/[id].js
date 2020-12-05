@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import setupSocket from 'utils/setupSocket';
 import setupWebAudio from 'utils/setupWebAudio';
+import socketHandler from 'utils/socketHandler';
 
-export default function Room() {
-  let socket;
-  const [context, setContext] = useState(null);
-  const [sounds, setSounds] = useState({});
+let context;
+let socket;
+
+export default function Room(props) {
+  const [state, setState] = useState({});
 
   useEffect(() => {
     const setup = async () => {
-      await setupSocket(socket);
-      await setupWebAudio(setContext, setSounds);
+      context = await setupWebAudio();
+      socket = await setupSocket(props.id);
+      socketHandler(socket, context, state, setState);
     }
 
     setup();
@@ -18,7 +21,7 @@ export default function Room() {
 
   const playSound = () => {
     let source = context.createBufferSource();
-    source.buffer = sounds.kick;
+    source.buffer = state.sounds.kick;
     source.connect(context.destination);
     source.start();
   }
@@ -28,4 +31,12 @@ export default function Room() {
       <button onClick={playSound}>play/stop</button>
     </div>
   )
+}
+
+export async function getServerSideProps({ params }) {
+  const id = params.id;
+
+  return {
+    props: { id }, // will be passed to the page component as props
+  }
 }
