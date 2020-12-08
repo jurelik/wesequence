@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import setupSocket from 'utils/setupSocket';
 import setupWebAudio from 'utils/setupWebAudio';
 import socketHandler from 'utils/socketHandler';
+import sequencer from 'utils/sequencer';
 
 let context;
 let socket;
@@ -41,12 +42,10 @@ export default function Room(props) {
     isPlaying = !isPlaying;
 
     if (isPlaying) {
-      currentNote = 0;
-      nextNoteTime = context.currentTime;
-      scheduler(); // kick off scheduling
+      sequencer('start', context, state);
     }
     else {
-      window.clearTimeout(timerID);
+      sequencer('stop', context, state);
     }
   }
 
