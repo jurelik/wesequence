@@ -16,7 +16,7 @@ export default function Room() {
       socketHandler();
     }
 
-    //Wait until we get the router object populated
+    // Wait until we get the router object populated
     if (router.asPath !== router.route) {
       setup();
     }

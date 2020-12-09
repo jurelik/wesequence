@@ -1,21 +1,21 @@
 import global from 'utils/global';
 
 const sequencer = (command) => {
-  const playSound = (time) => {
-    global.source = global.context.createBufferSource();
-    global.source.buffer = global.sounds.kick;
-    global.source.connect(global.context.destination);
-    global.source.start(time);
+  const playSound = (time, track) => {
+    track.source = global.context.createBufferSource();
+    track.source.buffer = track.buffer;
+    track.source.connect(global.context.destination);
+    track.source.start(time);
   }
 
   const nextNote = () => {
-    const secondsPerBeat = 60.0 / global.tempo;
+    const secondsPerBeat = 60.0 / global.tempo / 4;
 
     global.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
       // Advance the beat number, wrap to zero
     global.currentNote++;
-    if (global.currentNote === 4) {
+    if (global.currentNote === 16) {
       global.currentNote = 0;
     }
   }
@@ -23,8 +23,10 @@ const sequencer = (command) => {
   const scheduler = () => {
     // while there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
-      if (global.sequence[global.currentNote] === 1) {
-        playSound(global.nextNoteTime)
+      for (let track of global.scenes[0]) {
+        if (track.sequence[global.currentNote] === 1) {
+          playSound(global.nextNoteTime, track)
+        }
       }
       nextNote();
     }

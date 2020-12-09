@@ -1,6 +1,7 @@
 const global = {
   context: null,
   socket: null,
+  scenes: [],
   isPlaying: false,
   tempo: 120,
   currentNote: 0,

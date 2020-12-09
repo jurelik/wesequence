@@ -6,17 +6,19 @@ const socketHandler = () => {
 
     switch (data.type) {
       case 'init':
-        if (data.sounds.length > 0) {
+        if (data.scenes.length > 0) {
 
-          //Load sounds
-          const sounds = {};
-          for (const sound of data.sounds) {
-            const sample = await fetch(sound[1]);
+          //Load first scene
+          //const sounds = {};
+          for (const track of data.scenes[0]) {
+            const sample = await fetch(track.url);
             const arraybuffer = await sample.arrayBuffer();
             const audiobuffer = await global.context.decodeAudioData(arraybuffer);
-            sounds[sound[0]] = audiobuffer;
+            track.buffer = audiobuffer;
+            //sounds[sound[0]] = audiobuffer;
           }
-          global.sounds = sounds;
+          global.scenes[0] = data.scenes[0];
+          //global.sounds = sounds;
         }
         break;
       case 'test':
