@@ -1,59 +1,30 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import global from 'utils/global';
 import setupSocket from 'utils/setupSocket';
 import setupWebAudio from 'utils/setupWebAudio';
 import socketHandler from 'utils/socketHandler';
-import sequencer from 'utils/sequencer';
+import Sequencer from 'components/Sequencer';
 
-export default function Room(props) {
-  const [state, setState] = useState({
-    isPlaying: false,
-  });
-  const [tempo, setTempo] = useState(global.tempo);
+export default function Room() {
+  const router = useRouter();
 
   useEffect(() => {
     const setup = async () => {
       global.context = await setupWebAudio();
-      global.socket = await setupSocket(props.id);
+      global.socket = await setupSocket(router.query.id);
       socketHandler();
     }
 
-    setup();
-  }, [])
-
-  const handleBtn = () => {
-    setState({ ...state, isPlaying: !state.isPlaying });
-    global.isPlaying = !state.isPlaying;
-    if (global.isPlaying) {
-      sequencer('start');
+    //Wait until we get the router object populated
+    if (router.asPath !== router.route) {
+      setup();
     }
-    else {
-      sequencer('stop');
-    }
-  }
-
-  const handleInputChange = event => {
-    global.tempo = event.target.value;
-    setTempo(event.target.value);
-  }
+  }, [router])
 
   return (
     <div>
-      <button onClick={handleBtn}>play/stop</button>
-      <input
-        name="bpm"
-        type="number"
-        value={tempo}
-        onChange={handleInputChange}
-        />
+      <Sequencer />
     </div>
   )
-}
-
-export async function getServerSideProps({ params }) {
-  const id = params.id;
-
-  return {
-    props: { id }, // will be passed to the page component as props
-  }
 }
