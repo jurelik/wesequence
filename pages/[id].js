@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import global from 'utils/global';
 import setupSocket from 'utils/setupSocket';

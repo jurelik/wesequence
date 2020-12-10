@@ -1,35 +1,26 @@
-import { useState } from 'react';
 import { connect } from 'react-redux';
-import global from 'utils/global';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
-import { changeTempo } from 'redux/actions';
+import { changeTempo, changeIsPlaying } from 'redux/actions';
 
 const Sequencer = (props) => {
-  const [ state, setState ] = useState({
-    isPlaying: false,
-    tempo: 120
-  })
-
   const handlePlayButton = () => {
-    setState({ ...state, isPlaying: true });
-
-    if (!state.isPlaying) {
+    if (!props.isPlaying) {
       sequencer('start');
     }
+
+    props.changeIsPlaying(true);
   }
 
   const handleStopButton = () => {
-    setState({ ...state, isPlaying: false });
-
-    if (state.isPlaying) {
+    if (props.isPlaying) {
       sequencer('stop');
     }
+
+    props.changeIsPlaying(false);
   }
 
   const handleTempoChange = event => {
-    //global.tempo = event.target.value;
-    //setState({ ...state, tempo: event.target.value });
     props.changeTempo(event.target.value);
   }
 
@@ -52,11 +43,12 @@ const Sequencer = (props) => {
 
 const mapStateToProps = state => {
   return {
+    isPlaying: state.isPlaying,
     tempo: state.tempo,
     scenes: state.scenes
   }
 }
 
-const mapDispatchToProps = { changeTempo };
+const mapDispatchToProps = { changeTempo, changeIsPlaying };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sequencer);

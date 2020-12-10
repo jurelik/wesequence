@@ -14,6 +14,8 @@ const rootReducer = (state = initialState, action) => {
     }
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
+    case 'CHANGE_IS_PLAYING':
+      return { ...state, isPlaying: action.value };
     default: {
       return state;
     }
