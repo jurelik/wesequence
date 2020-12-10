@@ -1,4 +1,5 @@
 import global from 'utils/global';
+import store from 'redux/store';
 
 const sequencer = (command) => {
   const playSound = (time, track) => {
@@ -9,7 +10,7 @@ const sequencer = (command) => {
   }
 
   const nextNote = () => {
-    const secondsPerBeat = 60.0 / global.tempo / 4;
+    const secondsPerBeat = 60.0 / store.getState().tempo / 4;
 
     global.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
@@ -23,7 +24,7 @@ const sequencer = (command) => {
   const scheduler = () => {
     // while there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
-      for (let track of global.scenes[0]) {
+      for (let track of store.getState().scenes[0]) {
         if (track.sequence[global.currentNote] === 1) {
           playSound(global.nextNoteTime, track)
         }

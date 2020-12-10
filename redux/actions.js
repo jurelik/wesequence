@@ -1,3 +1,4 @@
-export const test = () => ({
-  type: 'TEST'
+export const changeTempo = (tempo) => ({
+  type: 'CHANGE_TEMPO',
+  tempo
 });

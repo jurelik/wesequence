@@ -1,4 +1,5 @@
 import global from 'utils/global';
+import store from 'redux/store';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -9,16 +10,14 @@ const socketHandler = () => {
         if (data.scenes.length > 0) {
 
           //Load first scene
-          //const sounds = {};
           for (const track of data.scenes[0]) {
             const sample = await fetch(track.url);
             const arraybuffer = await sample.arrayBuffer();
             const audiobuffer = await global.context.decodeAudioData(arraybuffer);
             track.buffer = audiobuffer;
-            //sounds[sound[0]] = audiobuffer;
           }
           global.scenes[0] = data.scenes[0];
-          //global.sounds = sounds;
+          store.dispatch({ type: 'INIT', scenes: data.scenes });
         }
         break;
       case 'test':
