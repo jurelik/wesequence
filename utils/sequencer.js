@@ -26,7 +26,9 @@ const sequencer = (command) => {
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
       for (let track of store.getState().scenes[0]) {
         if (track.sequence[global.currentNote] === 1) {
-          playSound(global.nextNoteTime, track)
+          //Find the track in the global object and play the sound from there
+          const globalTrack = global.scenes[0].find(_track => _track.name === track.name );
+          playSound(global.nextNoteTime, globalTrack)
         }
       }
       nextNote();

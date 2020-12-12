@@ -5,6 +5,7 @@ import { changeTempo, changeIsPlaying } from 'redux/actions';
 
 const Sequencer = (props) => {
   const handlePlayButton = () => {
+    console.log(props.scenes)
     if (!props.isPlaying) {
       sequencer('start');
     }

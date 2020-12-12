@@ -8,16 +8,22 @@ const socketHandler = () => {
     switch (data.type) {
       case 'init':
         if (data.scenes.length > 0) {
+          const deepClone = JSON.parse(JSON.stringify(data.scenes));
+          store.dispatch({ type: 'INIT', scenes: deepClone });
 
-          //Load first scene
+          //Load buffer into the global object
           for (const track of data.scenes[0]) {
             const sample = await fetch(track.url);
             const arraybuffer = await sample.arrayBuffer();
             const audiobuffer = await global.context.decodeAudioData(arraybuffer);
             track.buffer = audiobuffer;
+
+            //Prevent storing the same information twice
+            delete track['url'];
+            delete track['sequence'];
           }
+
           global.scenes[0] = data.scenes[0];
-          store.dispatch({ type: 'INIT', scenes: data.scenes });
         }
         break;
       case 'test':
