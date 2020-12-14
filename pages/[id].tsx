@@ -11,7 +11,7 @@ const Room = () => {
 
   useEffect(() => {
     const setup = async () => {
-      global.context = await setupWebAudio();
+      global.context = setupWebAudio();
       global.socket = await setupSocket(router.query.id);
       socketHandler();
     }

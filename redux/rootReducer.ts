@@ -1,10 +1,27 @@
-const initialState = {
+type StoreScenes = StoreScene[];
+type StoreScene = StoreTrack[];
+export type StoreTrack = {
+  name: string,
+  url: string,
+  sequence: number[]
+}
+export type SequencerStore = {
+  isPlaying: boolean,
+  tempo: number,
+  scenes: StoreScenes
+}
+type ReduxAction = {
+  type: string,
+  [key: string]: any
+}
+
+const initialState: SequencerStore = {
   isPlaying: false,
   tempo: 125,
   scenes: []
 }
 
-const rootReducer = (state = initialState, action) => {
+const rootReducer = (state = initialState, action: ReduxAction) => {
   switch (action.type) {
     case 'TEST': {
       return state;

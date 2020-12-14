@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
+import { SequencerStore, StoreTrack } from 'redux/rootReducer';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
 import { changeTempo, changeIsPlaying } from 'redux/actions';
 
-const Sequencer = (props) => {
+const Sequencer = (props: any) => {
   const handlePlayButton = () => {
-    console.log(props.scenes)
     if (!props.isPlaying) {
       sequencer('start');
     }
@@ -21,7 +21,7 @@ const Sequencer = (props) => {
     props.changeIsPlaying(false);
   }
 
-  const handleTempoChange = event => {
+  const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.changeTempo(event.target.value);
   }
 
@@ -35,14 +35,14 @@ const Sequencer = (props) => {
         value={props.tempo}
         onChange={handleTempoChange}
       />
-      {props.scenes.length > 0 ? props.scenes[0].map(track => (
+      {props.scenes.length > 0 ? props.scenes[0].map((track: StoreTrack) => (
         <Track key={track.name} name={track.name} />
       )) : null}
     </div>
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: SequencerStore) => {
   return {
     isPlaying: state.isPlaying,
     tempo: state.tempo,

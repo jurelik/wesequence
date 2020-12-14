@@ -1,8 +1,8 @@
-import global from 'utils/global';
+import global, { GlobalTrack } from 'utils/global';
 import store from 'redux/store';
 
-const sequencer = (command) => {
-  const playSound = (time, track) => {
+const sequencer = (command: string) => {
+  const playSound = (time: number, track: GlobalTrack) => {
     track.source = global.context.createBufferSource();
     track.source.buffer = track.buffer;
     track.source.connect(global.context.destination);
