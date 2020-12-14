@@ -33,6 +33,15 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, tempo: action.tempo };
     case 'CHANGE_IS_PLAYING':
       return { ...state, isPlaying: action.value };
+    case 'SEQ_BUTTON_PRESS':
+      let newScenes = [ ...state.scenes ];
+      newScenes[0].some(track => {
+        if (track.name === action.trackName) {
+          track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
+          return true;
+        }
+      });
+      return { ...state, scenes: newScenes }
     default: {
       return state;
     }
