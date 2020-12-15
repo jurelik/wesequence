@@ -26,6 +26,8 @@ const socketHandler = () => {
           global.scenes[0] = data.scenes[0];
         }
         break;
+      case 'SEQ_BUTTON_PRESS':
+        store.dispatch({ type: 'SEQ_BUTTON_PRESS', trackName: data.trackName, position: data.position });
       case 'test':
         console.log('test')
         break;

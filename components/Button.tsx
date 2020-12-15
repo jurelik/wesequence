@@ -3,7 +3,7 @@ import { handleSeqButtonPress } from 'redux/actions';
 
 const Button = (props: any) => {
   const handleOnClick = () => {
-    props.handleSeqButtonPress(props.trackName, props.id)
+    props.handleSeqButtonPress(props.trackName, props.id);
   }
 
   return (
