@@ -23,9 +23,6 @@ const initialState: SequencerStore = {
 
 const rootReducer = (state = initialState, action: ReduxAction) => {
   switch (action.type) {
-    case 'TEST': {
-      return state;
-    }
     case 'INIT': {
       return { ...state, scenes: action.scenes };
     }

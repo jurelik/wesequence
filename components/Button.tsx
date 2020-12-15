@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { handleSeqButtonPress } from 'redux/actions';
+import { seqButtonPress } from 'redux/actions';
 
 const Button = (props: any) => {
   const handleOnClick = () => {
-    props.handleSeqButtonPress(props.trackName, props.id);
+    props.seqButtonPress(props.trackName, props.id, true);
   }
 
   return (
@@ -12,7 +12,7 @@ const Button = (props: any) => {
 }
 
 const mapDispatchToProps = {
-  handleSeqButtonPress
+  seqButtonPress
 }
 
 export default connect(null, mapDispatchToProps)(Button);

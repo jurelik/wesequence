@@ -1,5 +1,6 @@
 import global from 'utils/global';
 import store from 'redux/store';
+import { seqButtonPress, changeTempo } from 'redux/actions';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -27,7 +28,11 @@ const socketHandler = () => {
         }
         break;
       case 'SEQ_BUTTON_PRESS':
-        store.dispatch({ type: 'SEQ_BUTTON_PRESS', trackName: data.trackName, position: data.position });
+        store.dispatch(seqButtonPress(data.trackName, data.position, false));
+        break;
+      case 'CHANGE_TEMPO':
+        store.dispatch(changeTempo(data.tempo, false));
+        break;
       case 'test':
         console.log('test')
         break;

@@ -22,7 +22,7 @@ const Sequencer = (props: any) => {
   }
 
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeTempo(event.target.value);
+    props.changeTempo(event.target.value, true);
   }
 
   return (
