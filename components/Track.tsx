@@ -1,4 +1,5 @@
 import Button from 'components/Button';
+import LoadSound from 'components/LoadSound';
 
 const Track = (props: any) => {
   return (
@@ -7,6 +8,7 @@ const Track = (props: any) => {
       {props.sequence.map((step: number, index: number) => (
         <Button key={index} id={index} value={step} trackName={props.name}/>
       ))}
+      <LoadSound trackName={props.name}/>
     </div>
   )
 }

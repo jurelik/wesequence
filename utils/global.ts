@@ -9,9 +9,9 @@ type GlobalObject = {
   timer?: ReturnType<typeof setTimeout>
 }
 
-type GlobalScenes = GlobalScene[];
-type GlobalScene = GlobalTrack[];
-export type GlobalTrack = {
+export type GlobalScenes = GlobalScene[];
+export type GlobalScene = GlobalTrack[];
+type GlobalTrack = {
   name: string,
   buffer: AudioBuffer,
   source?: AudioBufferSourceNode

@@ -1,3 +1,5 @@
+import global, { GlobalScene } from 'utils/global';
+
 type StoreScenes = StoreScene[];
 type StoreScene = StoreTrack[];
 export type StoreTrack = {
@@ -22,16 +24,26 @@ const initialState: SequencerStore = {
 }
 
 const rootReducer = (state = initialState, action: ReduxAction) => {
+  let newScenes: StoreScene[] | GlobalScene[];
+
   switch (action.type) {
-    case 'INIT': {
+    case 'INIT':
       return { ...state, scenes: action.scenes };
-    }
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
     case 'CHANGE_IS_PLAYING':
       return { ...state, isPlaying: action.value };
+    case 'CHANGE_SOUND':
+      newScenes = [ ...global.scenes ];
+      newScenes[0].some(track => {
+        if (track.name === action.trackName) {
+          track.buffer = action.audiobuffer;
+          return true;
+        }
+      });
+      return state;
     case 'SEQ_BUTTON_PRESS':
-      let newScenes = [ ...state.scenes ];
+      newScenes = [ ...state.scenes ];
       newScenes[0].some(track => {
         if (track.name === action.trackName) {
           track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
@@ -39,9 +51,8 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
         }
       });
       return { ...state, scenes: newScenes }
-    default: {
+    default:
       return state;
-    }
   }
 };
 

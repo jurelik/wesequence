@@ -13,12 +13,30 @@ export const changeTempo = (tempo: number, send: boolean) => {
     type: 'CHANGE_TEMPO',
     tempo
   };
-}
+};
 
 export const changeIsPlaying = (value: boolean) => ({
   type: 'CHANGE_IS_PLAYING',
   value
-})
+});
+
+export const changeSound = (trackName: string, file: File) => {
+  return async (dispatch) => {
+    try {
+      const arraybuffer = await file.arrayBuffer();
+      const audiobuffer = await global.context.decodeAudioData(arraybuffer);
+
+      dispatch({
+        type: 'CHANGE_SOUND',
+        trackName,
+        audiobuffer
+      });
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+}
 
 export const seqButtonPress = (trackName: string, position: number, send: boolean) => {
   // Send action via ws
@@ -35,4 +53,4 @@ export const seqButtonPress = (trackName: string, position: number, send: boolea
     trackName,
     position
   }
-}
+};
