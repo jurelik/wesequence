@@ -11,14 +11,14 @@ type GlobalObject = {
 
 export type GlobalScenes = GlobalScene[];
 export type GlobalScene = GlobalTrack[];
-type GlobalTrack = {
+export type GlobalTrack = {
   name: string,
-  buffer: AudioBuffer,
+  buffer?: AudioBuffer,
   source?: AudioBufferSourceNode
 }
 
 const global: GlobalObject = {
-  scenes: [],
+  scenes: [[]],
   currentNote: 0,
   lookahead: 25.0,
   scheduleAheadTime: 0.1,

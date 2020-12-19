@@ -54,3 +54,9 @@ export const seqButtonPress = (trackName: string, position: number, send: boolea
     position
   }
 };
+
+export const addTrack = () => {
+  return {
+    type: 'ADD_TRACK'
+  }
+}

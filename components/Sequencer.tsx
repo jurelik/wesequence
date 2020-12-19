@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { SequencerStore, StoreTrack } from 'redux/rootReducer';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
-import { changeTempo, changeIsPlaying } from 'redux/actions';
+import { changeTempo, changeIsPlaying, addTrack } from 'redux/actions';
 
 const Sequencer = (props: any) => {
   const handlePlayButton = () => {
@@ -21,6 +21,10 @@ const Sequencer = (props: any) => {
     props.changeIsPlaying(false);
   }
 
+  const handleAddButton = () => {
+    props.addTrack();
+  }
+
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.changeTempo(event.target.value, true);
   }
@@ -29,6 +33,7 @@ const Sequencer = (props: any) => {
     <div>
       <button onClick={handlePlayButton}>play</button>
       <button onClick={handleStopButton}>stop</button>
+      <button onClick={handleAddButton}>+</button>
       <input
         name="bpm"
         type="number"
@@ -50,6 +55,6 @@ const mapStateToProps = (state: SequencerStore) => {
   }
 }
 
-const mapDispatchToProps = { changeTempo, changeIsPlaying };
+const mapDispatchToProps = { changeTempo, changeIsPlaying, addTrack };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sequencer);

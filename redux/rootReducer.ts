@@ -1,10 +1,10 @@
-import global, { GlobalScene } from 'utils/global';
+import global, { GlobalScene, GlobalTrack } from 'utils/global';
 
 type StoreScenes = StoreScene[];
 type StoreScene = StoreTrack[];
 export type StoreTrack = {
   name: string,
-  url: string,
+  url?: string,
   sequence: number[]
 }
 export type SequencerStore = {
@@ -24,7 +24,9 @@ const initialState: SequencerStore = {
 }
 
 const rootReducer = (state = initialState, action: ReduxAction) => {
-  let newScenes: StoreScene[] | GlobalScene[];
+  let newStoreScenes: StoreScene[];
+  let newGlobalTrack: GlobalTrack;
+  let newStoreTrack: StoreTrack;
 
   switch (action.type) {
     case 'INIT':
@@ -34,8 +36,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'CHANGE_IS_PLAYING':
       return { ...state, isPlaying: action.value };
     case 'CHANGE_SOUND':
-      newScenes = [ ...global.scenes ];
-      newScenes[0].some(track => {
+      global.scenes[0].some(track => {
         if (track.name === action.trackName) {
           track.buffer = action.audiobuffer;
           return true;
@@ -43,14 +44,28 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       });
       return state;
     case 'SEQ_BUTTON_PRESS':
-      newScenes = [ ...state.scenes ];
-      newScenes[0].some(track => {
+      newStoreScenes = [ ...state.scenes ];
+      newStoreScenes[0].some(track => {
         if (track.name === action.trackName) {
           track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
           return true;
         }
       });
-      return { ...state, scenes: newScenes }
+      return { ...state, scenes: newStoreScenes }
+    case 'ADD_TRACK':
+      newStoreScenes = [ ...state.scenes ];
+      newGlobalTrack = {
+        name: `Track ${global.scenes[0].length + 1}`
+      }
+      newStoreTrack = {
+        name: `Track ${global.scenes[0].length + 1}`,
+        sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+
+      global.scenes[0].push(newGlobalTrack);
+      newStoreScenes[0].push(newStoreTrack);
+
+      return { ...state, scenes: newStoreScenes }
     default:
       return state;
   }
