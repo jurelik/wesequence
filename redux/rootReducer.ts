@@ -20,7 +20,7 @@ type ReduxAction = {
 const initialState: SequencerStore = {
   isPlaying: false,
   tempo: 125,
-  scenes: []
+  scenes: [[]]
 }
 
 const rootReducer = (state = initialState, action: ReduxAction) => {

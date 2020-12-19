@@ -22,7 +22,7 @@ const sequencer = (command: string) => {
   }
 
   const scheduler = () => {
-    // while there are notes that will need to play before the next interval, schedule them and advance the pointer.
+    // While there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
       for (let track of store.getState().scenes[0]) {
         if (track.sequence[global.currentNote] === 1) {
@@ -37,6 +37,12 @@ const sequencer = (command: string) => {
   }
 
   if (command === 'start') {
+    //Check if there are any active tracks
+    if (store.getState().scenes[0].length === 0) {
+      console.log('No active tracks.');
+      return;
+    }
+
     global.nextNoteTime = global.context.currentTime;
     scheduler(); // kick off scheduling
   }
