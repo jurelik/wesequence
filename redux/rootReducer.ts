@@ -66,6 +66,23 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScenes[0].push(newStoreTrack);
 
       return { ...state, scenes: newStoreScenes }
+    case 'DELETE_TRACK':
+      newStoreScenes = [ ...state.scenes ];
+
+      global.scenes[0].some((track, index) => {
+        if (track.name === action.trackName) {
+          global.scenes[0].splice(index, 1);
+          return true;
+        }
+      })
+      newStoreScenes[0].some((track, index) => {
+        if (track.name === action.trackName) {
+          newStoreScenes[0].splice(index, 1);
+          return true;
+        }
+      })
+
+      return { ...state, scenes: newStoreScenes }
     default:
       return state;
   }

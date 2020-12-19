@@ -60,3 +60,10 @@ export const addTrack = () => {
     type: 'ADD_TRACK'
   }
 }
+
+export const deleteTrack = (trackName: string) => {
+  return {
+    type: 'DELETE_TRACK',
+    trackName
+  }
+}
