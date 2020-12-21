@@ -41,7 +41,7 @@ const Sequencer = (props: any) => {
         onChange={handleTempoChange}
       />
       {props.scenes.length > 0 ? props.scenes[0].map((track: StoreTrack) => (
-        <Track key={track.name} name={track.name} scene={0} sequence={track.sequence}/>
+        <Track key={track.id} id={track.id} name={track.name} scene={0} sequence={track.sequence}/>
       )) : null}
     </div>
   )

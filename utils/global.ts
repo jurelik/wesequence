@@ -12,6 +12,7 @@ type GlobalObject = {
 export type GlobalScenes = GlobalScene[];
 export type GlobalScene = GlobalTrack[];
 export type GlobalTrack = {
+  id: number,
   name: string,
   buffer?: AudioBuffer,
   source?: AudioBufferSourceNode

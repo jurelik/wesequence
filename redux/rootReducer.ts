@@ -3,6 +3,7 @@ import global, { GlobalScene, GlobalTrack } from 'utils/global';
 type StoreScenes = StoreScene[];
 type StoreScene = StoreTrack[];
 export type StoreTrack = {
+  id: number,
   name: string,
   url?: string,
   sequence: number[]
@@ -55,10 +56,12 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'ADD_TRACK':
       newStoreScenes = [ ...state.scenes ];
       newGlobalTrack = {
-        name: `Track ${global.scenes[0].length + 1}`
+        id: action.trackId,
+        name: action.trackName
       }
       newStoreTrack = {
-        name: `Track ${global.scenes[0].length + 1}`,
+        id: action.trackId,
+        name: action.trackName,
         sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }
 

@@ -17,6 +17,7 @@ const Track = (props: any) => {
       ))}
       <LoadSound trackName={props.name}/>
       <button onClick={handleDeleteButton}>x</button>
+      <p>{props.id}</p>
     </div>
   )
 }

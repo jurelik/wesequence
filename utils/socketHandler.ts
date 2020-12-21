@@ -14,10 +14,12 @@ const socketHandler = () => {
 
           //Load buffer into the global object
           for (const track of data.scenes[0]) {
-            const sample = await fetch(track.url);
-            const arraybuffer = await sample.arrayBuffer();
-            const audiobuffer = await global.context.decodeAudioData(arraybuffer);
-            track.buffer = audiobuffer;
+            if (track.url) {
+              const sample = await fetch(track.url);
+              const arraybuffer = await sample.arrayBuffer();
+              const audiobuffer = await global.context.decodeAudioData(arraybuffer);
+              track.buffer = audiobuffer;
+            }
 
             //Prevent storing the same information twice
             delete track['url'];
@@ -34,7 +36,7 @@ const socketHandler = () => {
         store.dispatch(changeTempo(data.tempo, false));
         break;
       case 'ADD_TRACK':
-        store.dispatch(addTrack(false))
+        store.dispatch(addTrack(false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
         store.dispatch(deleteTrack(data.trackName, false))
