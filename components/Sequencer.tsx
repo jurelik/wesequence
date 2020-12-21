@@ -22,7 +22,7 @@ const Sequencer = (props: any) => {
   }
 
   const handleAddButton = () => {
-    props.addTrack();
+    props.addTrack(true);
   }
 
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -55,7 +55,14 @@ export const seqButtonPress = (trackName: string, position: number, send: boolea
   }
 };
 
-export const addTrack = () => {
+export const addTrack = (send: boolean) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'ADD_TRACK',
+    }));
+  }
+
   return {
     type: 'ADD_TRACK'
   }

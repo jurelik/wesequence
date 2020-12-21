@@ -1,6 +1,6 @@
 import global from 'utils/global';
 import store from 'redux/store';
-import { seqButtonPress, changeTempo } from 'redux/actions';
+import { seqButtonPress, changeTempo, addTrack } from 'redux/actions';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -33,6 +33,8 @@ const socketHandler = () => {
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));
         break;
+      case 'ADD_TRACK':
+        store.dispatch(addTrack(false))
       case 'test':
         console.log('test')
         break;
