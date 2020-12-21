@@ -38,19 +38,19 @@ export const changeSound = (trackName: string, file: File) => {
   }
 }
 
-export const seqButtonPress = (trackName: string, position: number, send: boolean) => {
+export const seqButtonPress = (trackId: number, position: number, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'SEQ_BUTTON_PRESS',
-      trackName,
+      trackId,
       position
     }));
   }
 
   return {
     type: 'SEQ_BUTTON_PRESS',
-    trackName,
+    trackId,
     position
   }
 };

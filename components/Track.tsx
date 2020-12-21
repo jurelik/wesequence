@@ -13,7 +13,7 @@ const Track = (props: any) => {
     <div>
       <p>{props.name}</p>
       {props.sequence.map((step: number, index: number) => (
-        <Button key={index} id={index} value={step} trackName={props.name}/>
+        <Button key={index} id={index} value={step} trackId={props.id}/>
       ))}
       <LoadSound trackName={props.name}/>
       <button onClick={handleDeleteButton}>x</button>

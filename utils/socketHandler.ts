@@ -30,7 +30,7 @@ const socketHandler = () => {
         }
         break;
       case 'SEQ_BUTTON_PRESS':
-        store.dispatch(seqButtonPress(data.trackName, data.position, false));
+        store.dispatch(seqButtonPress(data.trackId, data.position, false));
         break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));

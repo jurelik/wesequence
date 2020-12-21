@@ -47,7 +47,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'SEQ_BUTTON_PRESS':
       newStoreScenes = [ ...state.scenes ];
       newStoreScenes[0].some(track => {
-        if (track.name === action.trackName) {
+        if (track.id === action.trackId) {
           track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
           return true;
         }
