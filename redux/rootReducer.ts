@@ -73,13 +73,13 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScenes = [ ...state.scenes ];
 
       global.scenes[0].some((track, index) => {
-        if (track.name === action.trackName) {
+        if (track.id === action.trackId) {
           global.scenes[0].splice(index, 1);
           return true;
         }
       })
       newStoreScenes[0].some((track, index) => {
-        if (track.name === action.trackName) {
+        if (track.id === action.trackId) {
           newStoreScenes[0].splice(index, 1);
           return true;
         }

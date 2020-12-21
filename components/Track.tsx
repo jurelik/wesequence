@@ -6,7 +6,7 @@ import { deleteTrack } from 'redux/actions';
 
 const Track = (props: any) => {
   const handleDeleteButton = () => {
-    props.deleteTrack(props.name, true);
+    props.deleteTrack(props.id, true);
   }
 
   return (
@@ -17,7 +17,6 @@ const Track = (props: any) => {
       ))}
       <LoadSound trackName={props.name}/>
       <button onClick={handleDeleteButton}>x</button>
-      <p>{props.id}</p>
     </div>
   )
 }

@@ -39,7 +39,7 @@ const socketHandler = () => {
         store.dispatch(addTrack(false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
-        store.dispatch(deleteTrack(data.trackName, false))
+        store.dispatch(deleteTrack(data.trackId, false))
         break;
       case 'test':
         console.log('test')
