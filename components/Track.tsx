@@ -6,7 +6,7 @@ import { deleteTrack } from 'redux/actions';
 
 const Track = (props: any) => {
   const handleDeleteButton = () => {
-    props.deleteTrack(props.name);
+    props.deleteTrack(props.name, true);
   }
 
   return (
