@@ -1,4 +1,4 @@
-import global, { GlobalScene, GlobalTrack } from 'utils/global';
+import global, { GlobalTrack } from 'utils/global';
 
 type StoreScenes = StoreScene[];
 type StoreScene = StoreTrack[];

@@ -3,7 +3,7 @@ import { changeSound } from 'redux/actions';
 
 const LoadSound = (props: any) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeSound(props.trackName, e.target.files[0]);
+    props.changeSound(props.trackId, e.target.files[0], true);
   }
 
   return (
