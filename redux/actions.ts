@@ -1,4 +1,5 @@
 import global from 'utils/global';
+import { arraybufferToString } from 'utils/arraybuffer';
 
 export const changeTempo = (tempo: number, send: boolean) => {
   // Send action via ws
@@ -20,25 +21,36 @@ export const changeIsPlaying = (value: boolean) => ({
   value
 });
 
-export const changeSound = (trackId: string, file: File, send: boolean) => {
+export const changeSoundSend = (trackId: string, file: File) => {
   return async (dispatch) => {
-    // Taken from: https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
-    const arraybufferToString = (buf: ArrayBuffer) => {
-      return String.fromCharCode.apply(null, new Uint16Array(buf));
-    }
-
     try {
+      console.log('hi')
       const arraybuffer = await file.arrayBuffer();
       const arraybufferString = arraybufferToString(arraybuffer);
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
 
-      if (send) {
-        global.socket.send(JSON.stringify({
-          type:'CHANGE_SOUND',
-          trackId,
-          arraybuffer: arraybufferString
-        }))
-      }
+      global.socket.send(JSON.stringify({
+        type:'CHANGE_SOUND',
+        trackId,
+        arraybuffer: arraybufferString
+      }))
+
+      dispatch({
+        type: 'CHANGE_SOUND',
+        trackId,
+        audiobuffer
+      });
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+}
+
+export const changeSoundReceive = (trackId: String, arraybuffer: ArrayBuffer) => {
+  return async (dispatch) => {
+    try {
+      const audiobuffer = await global.context.decodeAudioData(arraybuffer);
 
       dispatch({
         type: 'CHANGE_SOUND',

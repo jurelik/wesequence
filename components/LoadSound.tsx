@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
-import { changeSound } from 'redux/actions';
+import { changeSoundSend } from 'redux/actions';
 
 const LoadSound = (props: any) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeSound(props.trackId, e.target.files[0], true);
+    props.changeSoundSend(props.trackId, e.target.files[0]);
   }
 
   return (
@@ -12,7 +12,7 @@ const LoadSound = (props: any) => {
 }
 
 const mapDispatchToProps = {
-  changeSound
+  changeSoundSend
 }
 
 export default connect(null, mapDispatchToProps)(LoadSound);

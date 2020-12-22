@@ -38,7 +38,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, isPlaying: action.value };
     case 'CHANGE_SOUND':
       global.scenes[0].some(track => {
-        if (track.name === action.trackName) {
+        if (track.id === action.trackId) {
           track.buffer = action.audiobuffer;
           return true;
         }
@@ -90,5 +90,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return state;
   }
 };
+
+export type RootState = ReturnType<typeof rootReducer>
 
 export default rootReducer;
