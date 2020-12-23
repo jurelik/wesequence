@@ -11,7 +11,7 @@ const socketHandler = () => {
       case 'init':
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
-          store.dispatch({ type: 'INIT', scenes: deepClone });
+          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
           //Load buffer into the global object
           for (const track of data.scenes[0]) {

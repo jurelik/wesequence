@@ -20,7 +20,7 @@ type ReduxAction = {
 
 const initialState: SequencerStore = {
   isPlaying: false,
-  tempo: 125,
+  tempo: 120,
   scenes: [[]]
 }
 
@@ -31,7 +31,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
 
   switch (action.type) {
     case 'INIT':
-      return { ...state, scenes: action.scenes };
+      return { ...state, tempo: action.tempo, scenes: action.scenes };
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
     case 'CHANGE_IS_PLAYING':
