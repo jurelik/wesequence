@@ -10,7 +10,8 @@ const sequencer = (command: string) => {
   }
 
   const nextNote = () => {
-    const secondsPerBeat = 60.0 / store.getState().tempo / 4;
+    let tempo = store.getState().tempo > 50 ? store.getState().tempo : 50;
+    const secondsPerBeat = 60.0 / tempo / 4;
 
     global.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
