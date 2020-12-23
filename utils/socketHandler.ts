@@ -37,7 +37,7 @@ const socketHandler = () => {
         //Create buffer
         const arraybuffer = stringToArraybuffer(data.arraybuffer);
         store.dispatch(changeSoundReceive(data.trackId, arraybuffer));
-
+        break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));
         break;
