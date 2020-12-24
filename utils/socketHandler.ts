@@ -11,6 +11,9 @@ const socketHandler = () => {
       case 'init':
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
+          for (const track of deepClone[0]) { //Delete this once back-end is set up
+            track.gain = 100;
+          }
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
           //Load buffer into the global object
@@ -20,6 +23,10 @@ const socketHandler = () => {
               const arraybuffer = await sample.arrayBuffer();
               const audiobuffer = await global.context.decodeAudioData(arraybuffer);
               track.buffer = audiobuffer;
+
+              //Create a gain node
+              track.gain = global.context.createGain();
+              track.gain.connect(global.context.destination);
             }
 
             //Prevent storing the same information twice

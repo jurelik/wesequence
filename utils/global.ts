@@ -15,7 +15,8 @@ export type GlobalTrack = {
   id: number,
   name: string,
   buffer?: AudioBuffer,
-  source?: AudioBufferSourceNode
+  source?: AudioBufferSourceNode,
+  gain: GainNode
 }
 
 const global: GlobalObject = {

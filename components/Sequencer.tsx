@@ -26,7 +26,7 @@ const Sequencer = (props: any) => {
   }
 
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeTempo(event.target.value, true);
+    props.changeTempo(parseInt(event.target.value), true);
   }
 
   return (

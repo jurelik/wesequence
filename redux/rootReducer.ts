@@ -6,7 +6,8 @@ export type StoreTrack = {
   id: number,
   name: string,
   url?: string,
-  sequence: number[]
+  sequence: number[],
+  gain: number
 }
 export type SequencerStore = {
   isPlaying: boolean,
@@ -44,6 +45,26 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
         }
       });
       return state;
+    case 'CHANGE_GAIN':
+      newStoreScenes = [ ...state.scenes ];
+
+      //Calculate gain amount for the global object
+      global.scenes[0].some(track => {
+        if (track.id === action.trackId) {
+          track.gain.gain.value = 1 / 127 * action.gain;
+          return true;
+        }
+      });
+
+      //Update gain in the store
+      newStoreScenes[0].some(track => {
+        if (track.id === action.trackId) {
+          track.gain = action.gain;
+          return true;
+        }
+      });
+
+      return { ...state, scenes: newStoreScenes }
     case 'SEQ_BUTTON_PRESS':
       newStoreScenes = [ ...state.scenes ];
       newStoreScenes[0].some(track => {
@@ -57,12 +78,14 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScenes = [ ...state.scenes ];
       newGlobalTrack = {
         id: action.trackId,
-        name: action.trackName
+        name: action.trackName,
+        gain: global.context.createGain()
       }
       newStoreTrack = {
         id: action.trackId,
         name: action.trackName,
-        sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        gain: 100
       }
 
       global.scenes[0].push(newGlobalTrack);

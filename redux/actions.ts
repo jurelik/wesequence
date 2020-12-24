@@ -24,7 +24,6 @@ export const changeIsPlaying = (value: boolean) => ({
 export const changeSoundSend = (trackId: string, file: File) => {
   return async (dispatch) => {
     try {
-      console.log('hi')
       const arraybuffer = await file.arrayBuffer();
       const arraybufferString = arraybufferToString(arraybuffer);
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
@@ -47,7 +46,7 @@ export const changeSoundSend = (trackId: string, file: File) => {
   }
 }
 
-export const changeSoundReceive = (trackId: String, arraybuffer: ArrayBuffer) => {
+export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) => {
   return async (dispatch) => {
     try {
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
@@ -62,6 +61,15 @@ export const changeSoundReceive = (trackId: String, arraybuffer: ArrayBuffer) =>
       console.log(err);
     }
   }
+}
+
+export const changeGain = (trackId: number, gain: number) => {
+  return {
+    type: 'CHANGE_GAIN',
+    trackId,
+    gain
+  }
+
 }
 
 export const seqButtonPress = (trackId: number, position: number, send: boolean) => {
