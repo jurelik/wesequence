@@ -15,7 +15,7 @@ const sequencer = (command: string) => {
 
     global.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
-      // Advance the beat number, wrap to zero
+    //Advance the beat number, wrap to zero
     global.currentNote++;
     if (global.currentNote === 16) {
       global.currentNote = 0;
@@ -23,7 +23,15 @@ const sequencer = (command: string) => {
   }
 
   const scheduler = () => {
-    // While there are notes that will need to play before the next interval, schedule them and advance the pointer.
+    //Stop the scheduler if there are no active tracks
+    if (store.getState().scenes[0].length === 0) {
+      global.currentNote = 0;
+      clearTimeout(global.timer);
+      console.log('No active tracks.');
+      return;
+    }
+
+    //While there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
       for (let track of store.getState().scenes[0]) {
         if (track.sequence[global.currentNote] === 1) {
