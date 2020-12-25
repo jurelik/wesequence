@@ -63,7 +63,16 @@ export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) =>
   }
 }
 
-export const changeGain = (trackId: number, gain: number) => {
+export const changeGain = (trackId: number, gain: number, send?: boolean) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'CHANGE_GAIN',
+      trackId,
+      gain
+    }));
+  }
+
   return {
     type: 'CHANGE_GAIN',
     trackId,

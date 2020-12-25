@@ -1,7 +1,7 @@
 import global from 'utils/global';
 import { stringToArraybuffer } from 'utils/arraybuffer';
 import store from 'redux/store';
-import { seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack } from 'redux/actions';
+import { seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack, changeGain } from 'redux/actions';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -11,9 +11,6 @@ const socketHandler = () => {
       case 'init':
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
-          for (const track of deepClone[0]) { //Delete this once back-end is set up
-            track.gain = 100;
-          }
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
           //Load buffer into the global object
@@ -25,8 +22,11 @@ const socketHandler = () => {
               track.buffer = audiobuffer;
 
               //Create a gain node
+              const gainValue = track.gain; //Store 0-127 value before reassigning it
+
               track.gain = global.context.createGain();
               track.gain.connect(global.context.destination);
+              track.gain.gain.value = 1 / 127 * gainValue;
             }
 
             //Prevent storing the same information twice
@@ -47,6 +47,9 @@ const socketHandler = () => {
         break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));
+        break;
+      case 'CHANGE_GAIN':
+        store.dispatch(changeGain(data.trackId, data.gain));
         break;
       case 'ADD_TRACK':
         store.dispatch(addTrack(false, data.trackId, data.trackName))
