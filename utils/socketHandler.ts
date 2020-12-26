@@ -18,6 +18,7 @@ const socketHandler = () => {
             if (track.url) {
               const sample = await fetch(track.url);
               const arraybuffer = await sample.arrayBuffer();
+              console.log(arraybuffer);
               const audiobuffer = await global.context.decodeAudioData(arraybuffer);
               track.buffer = audiobuffer;
 

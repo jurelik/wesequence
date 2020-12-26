@@ -129,3 +129,10 @@ export const deleteTrack = (trackId: number, send: boolean) => {
     trackId
   }
 }
+
+export const muteTrack = (trackId: number) => {
+  return {
+    type: 'MUTE_TRACK',
+    trackId
+  }
+}

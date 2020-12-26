@@ -7,7 +7,9 @@ export type StoreTrack = {
   name: string,
   url?: string,
   sequence: number[],
-  gain: number
+  gain: number,
+  mute?: boolean,
+  solo?: boolean
 }
 export type SequencerStore = {
   isPlaying: boolean,
@@ -100,13 +102,25 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
           global.scenes[0].splice(index, 1);
           return true;
         }
-      })
+      });
+
       newStoreScenes[0].some((track, index) => {
         if (track.id === action.trackId) {
           newStoreScenes[0].splice(index, 1);
           return true;
         }
-      })
+      });
+
+      return { ...state, scenes: newStoreScenes }
+    case 'MUTE_TRACK':
+      newStoreScenes = [ ...state.scenes ];
+
+      newStoreScenes[0].some(track => {
+        if (track.id === action.trackId) {
+          track.mute = !track.mute;
+          return true;
+        }
+      });
 
       return { ...state, scenes: newStoreScenes }
     default:

@@ -3,9 +3,13 @@ import { SequencerStore } from 'redux/rootReducer';
 import Button from 'components/Button';
 import LoadSound from 'components/LoadSound';
 import GainSlider from 'components/GainSlider';
-import { deleteTrack } from 'redux/actions';
+import { deleteTrack, muteTrack } from 'redux/actions';
 
 const Track = (props: any) => {
+  const handleMuteButton = () => {
+    props.muteTrack(props.id);
+  }
+
   const handleDeleteButton = () => {
     props.deleteTrack(props.id, true);
   }
@@ -18,13 +22,15 @@ const Track = (props: any) => {
       ))}
       <GainSlider trackId={props.id}/>
       <LoadSound trackId={props.id}/>
+      <button onClick={handleMuteButton} style={{ backgroundColor: props.mute ? 'red' : null }}>M</button>
       <button onClick={handleDeleteButton}>x</button>
     </div>
   )
 }
 
 const mapDispatchToProps = {
-  deleteTrack
+  deleteTrack,
+  muteTrack
 }
 
 const mapStateToProps = (state: SequencerStore) => {

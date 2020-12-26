@@ -36,7 +36,7 @@ const sequencer = (command: string) => {
     //While there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
       for (let track of scenes) {
-        if (track.sequence[global.currentNote] === 1) {
+        if (track.sequence[global.currentNote] === 1 && !track.mute) {
           //Find the track in the global object and play the sound from there
           const globalTrack = global.scenes[0].find(_track => _track.name === track.name );
           playSound(global.nextNoteTime, globalTrack)
