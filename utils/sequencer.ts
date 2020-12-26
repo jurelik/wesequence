@@ -23,23 +23,41 @@ const sequencer = (command: string) => {
   }
 
   const scheduler = () => {
-    const scenes = store.getState().scenes[0];
+    const scene = store.getState().scenes[0];
+    let soloTrack;
 
     //Stop the scheduler if there are no active tracks
-    if (scenes.length === 0) {
+    if (scene.length === 0) {
       global.currentNote = 0;
       clearTimeout(global.timer);
       console.log('No active tracks.');
       return;
     }
 
+    //Check if a track is solo-ed
+    scene.some((track) => {
+      if (track.solo) {
+        soloTrack = track;
+        return true;
+      }
+    });
+
     //While there are notes that will need to play before the next interval, schedule them and advance the pointer.
     while (global.nextNoteTime < global.context.currentTime + global.scheduleAheadTime ) {
-      for (let track of scenes) {
-        if (track.sequence[global.currentNote] === 1 && !track.mute) {
+      if (soloTrack) {
+        if (soloTrack.sequence[global.currentNote] === 1 && !soloTrack.mute) {
           //Find the track in the global object and play the sound from there
-          const globalTrack = global.scenes[0].find(_track => _track.name === track.name );
+          const globalTrack = global.scenes[0].find(_track => _track.name === soloTrack.name );
           playSound(global.nextNoteTime, globalTrack)
+        }
+      }
+      else {
+        for (let track of scene) {
+          if (track.sequence[global.currentNote] === 1 && !track.mute) {
+            //Find the track in the global object and play the sound from there
+            const globalTrack = global.scenes[0].find(_track => _track.name === track.name );
+            playSound(global.nextNoteTime, globalTrack)
+          }
         }
       }
       nextNote();

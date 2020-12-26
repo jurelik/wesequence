@@ -136,3 +136,10 @@ export const muteTrack = (trackId: number) => {
     trackId
   }
 }
+
+export const soloTrack = (trackId: number) => {
+  return {
+    type: 'SOLO_TRACK',
+    trackId
+  }
+}

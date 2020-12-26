@@ -18,12 +18,11 @@ const socketHandler = () => {
             if (track.url) {
               const sample = await fetch(track.url);
               const arraybuffer = await sample.arrayBuffer();
-              console.log(arraybuffer);
               const audiobuffer = await global.context.decodeAudioData(arraybuffer);
               track.buffer = audiobuffer;
 
               //Create a gain node
-              const gainValue = track.gain; //Store 0-127 value before reassigning it
+              const gainValue = track.gain; //Store the 0-127 value before reassigning it
 
               track.gain = global.context.createGain();
               track.gain.connect(global.context.destination);

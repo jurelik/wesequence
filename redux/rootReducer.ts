@@ -123,6 +123,19 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       });
 
       return { ...state, scenes: newStoreScenes }
+    case 'SOLO_TRACK':
+      newStoreScenes = [ ...state.scenes ];
+
+      for (let track of newStoreScenes[0]) {
+        if (track.id === action.trackId) {
+          track.solo = !track.solo;
+        }
+        else {
+          track.solo = false;
+        }
+      }
+
+      return { ...state, scenes: newStoreScenes }
     default:
       return state;
   }
