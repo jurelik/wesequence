@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import { SequencerStore, StoreTrack } from 'redux/rootReducer';
+import { SequencerStore, StoreTrack, StoreScene } from 'redux/rootReducer';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
+import SceneButton from 'components/SceneButton';
 import { changeTempo, changeIsPlaying, addTrack } from 'redux/actions';
 
 const Sequencer = (props: any) => {
@@ -40,8 +41,11 @@ const Sequencer = (props: any) => {
         value={props.tempo}
         onChange={handleTempoChange}
       />
-      {props.scenes.length > 0 ? props.scenes[0].map((track: StoreTrack) => (
-        <Track key={track.id} id={track.id} name={track.name} scene={0} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
+      {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene) => (
+        <SceneButton key={scene.id} index={props.scenes.indexOf(scene)} />
+      )) : null}
+      {props.scenes.length > 0 ? props.scenes[props.currentScene].map((track: StoreTrack) => (
+        <Track key={track.id} id={track.id} name={track.name} scene={props.currentScene} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
       )) : null}
     </div>
   )
@@ -51,7 +55,8 @@ const mapStateToProps = (state: SequencerStore) => {
   return {
     isPlaying: state.isPlaying,
     tempo: state.tempo,
-    scenes: state.scenes
+    scenes: state.scenes,
+    currentScene: state.currentScene
   }
 }
 

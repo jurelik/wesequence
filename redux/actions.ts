@@ -21,6 +21,13 @@ export const changeIsPlaying = (value: boolean) => ({
   value
 });
 
+export const changeScene = (index: number) => {
+  return {
+    type: 'CHANGE_SCENE',
+    index
+  }
+}
+
 export const changeSoundSend = (trackId: string, file: File) => {
   return async (dispatch) => {
     try {

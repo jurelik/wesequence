@@ -14,7 +14,8 @@ export type StoreTrack = {
 export type SequencerStore = {
   isPlaying: boolean,
   tempo: number,
-  scenes: StoreScenes
+  scenes: StoreScenes,
+  currentScene: number
 }
 type ReduxAction = {
   type: string,
@@ -24,7 +25,8 @@ type ReduxAction = {
 const initialState: SequencerStore = {
   isPlaying: false,
   tempo: 120,
-  scenes: [[]]
+  scenes: [[]],
+  currentScene: 0
 }
 
 const rootReducer = (state = initialState, action: ReduxAction) => {
@@ -39,6 +41,8 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, tempo: action.tempo };
     case 'CHANGE_IS_PLAYING':
       return { ...state, isPlaying: action.value };
+    case 'CHANGE_SCENE':
+      return { ...state, currentScene: action.index };
     case 'CHANGE_SOUND':
       global.scenes[0].some(track => {
         if (track.id === action.trackId) {
