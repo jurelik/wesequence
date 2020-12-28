@@ -23,7 +23,8 @@ const sequencer = (command: string) => {
   }
 
   const scheduler = () => {
-    const scene = store.getState().scenes[0];
+    const _store = store.getState();
+    const scene = _store.scenes[_store.currentScene];
     let soloTrack;
 
     //Stop the scheduler if there are no active tracks
@@ -47,7 +48,7 @@ const sequencer = (command: string) => {
       if (soloTrack) {
         if (soloTrack.sequence[global.currentNote] === 1 && !soloTrack.mute) {
           //Find the track in the global object and play the sound from there
-          const globalTrack = global.scenes[0].find(_track => _track.name === soloTrack.name );
+          const globalTrack = global.scenes[_store.currentScene].find(_track => _track.id === soloTrack.id );
           playSound(global.nextNoteTime, globalTrack)
         }
       }
@@ -55,7 +56,7 @@ const sequencer = (command: string) => {
         for (let track of scene) {
           if (track.sequence[global.currentNote] === 1 && !track.mute) {
             //Find the track in the global object and play the sound from there
-            const globalTrack = global.scenes[0].find(_track => _track.name === track.name );
+            const globalTrack = global.scenes[_store.currentScene].find(_track => _track.id === track.id );
             playSound(global.nextNoteTime, globalTrack)
           }
         }
@@ -67,7 +68,7 @@ const sequencer = (command: string) => {
 
   if (command === 'start') {
     //Check if there are any active tracks
-    if (store.getState().scenes[0].length === 0) {
+    if (store.getState().scenes[store.getState().currentScene].length === 0) {
       console.log('No active tracks.');
       return;
     }

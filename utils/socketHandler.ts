@@ -13,28 +13,30 @@ const socketHandler = () => {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
-          //Load buffer into the global object
-          for (const track of data.scenes[0]) {
-            if (track.url) {
-              const sample = await fetch(track.url);
-              const arraybuffer = await sample.arrayBuffer();
-              const audiobuffer = await global.context.decodeAudioData(arraybuffer);
-              track.buffer = audiobuffer;
+          for (const scene of data.scenes) {
+            //Load buffer into the global object
+            for (const track of scene) {
+              if (track.url) {
+                const sample = await fetch(track.url);
+                const arraybuffer = await sample.arrayBuffer();
+                const audiobuffer = await global.context.decodeAudioData(arraybuffer);
+                track.buffer = audiobuffer;
 
-              //Create a gain node
-              const gainValue = track.gain; //Store the 0-127 value before reassigning it
+                //Create a gain node
+                const gainValue = track.gain; //Store the 0-127 value before reassigning it
 
-              track.gain = global.context.createGain();
-              track.gain.connect(global.context.destination);
-              track.gain.gain.value = 1 / 127 * gainValue;
+                track.gain = global.context.createGain();
+                track.gain.connect(global.context.destination);
+                track.gain.gain.value = 1 / 127 * gainValue;
+              }
+
+              //Prevent storing the same information twice
+              delete track['url'];
+              delete track['sequence'];
             }
-
-            //Prevent storing the same information twice
-            delete track['url'];
-            delete track['sequence'];
           }
 
-          global.scenes[0] = data.scenes[0];
+          global.scenes = data.scenes;
         }
         break;
       case 'SEQ_BUTTON_PRESS':
