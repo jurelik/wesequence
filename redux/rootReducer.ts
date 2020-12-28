@@ -39,7 +39,6 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
 
   switch (action.type) {
     case 'INIT':
-      console.log(action.scenes);
       return { ...state, tempo: action.tempo, scenes: action.scenes };
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
@@ -48,7 +47,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'CHANGE_SCENE':
       return { ...state, currentScene: action.index };
     case 'CHANGE_SOUND':
-      global.scenes[state.currentScene].some(track => {
+      global.scenes[state.currentScene].tracks.some(track => {
         if (track.id === action.trackId) {
           track.buffer = action.audiobuffer;
           return true;
@@ -59,7 +58,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScenes = [ ...state.scenes ];
 
       //Calculate gain amount for the global object
-      global.scenes[state.currentScene].some(track => {
+      global.scenes[state.currentScene].tracks.some(track => {
         if (track.id === action.trackId) {
           track.gain.gain.value = 1 / 127 * action.gain;
           return true;
@@ -67,7 +66,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       });
 
       //Update gain in the store
-      newStoreScenes[state.currentScene].some(track => {
+      newStoreScenes[state.currentScene].tracks.some(track => {
         if (track.id === action.trackId) {
           track.gain = action.gain;
           return true;
@@ -77,7 +76,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, scenes: newStoreScenes }
     case 'SEQ_BUTTON_PRESS':
       newStoreScenes = [ ...state.scenes ];
-      newStoreScenes[state.currentScene].some(track => {
+      newStoreScenes[state.currentScene].tracks.some(track => {
         if (track.id === action.trackId) {
           track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
           return true;
@@ -101,23 +100,44 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
         gain: 100
       }
 
-      global.scenes[state.currentScene].push(newGlobalTrack);
-      newStoreScenes[state.currentScene].push(newStoreTrack);
+      global.scenes.some(scene => {
+        if (scene.id === action.sceneId) {
+          scene.tracks.push(newGlobalTrack);
+          return true;
+        }
+      });
+
+      newStoreScenes.some(scene => {
+        if (scene.id === action.sceneId) {
+          scene.tracks.push(newStoreTrack);
+          return true;
+        }
+      });
 
       return { ...state, scenes: newStoreScenes }
     case 'DELETE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
-      global.scenes[state.currentScene].some((track, index) => {
-        if (track.id === action.trackId) {
-          global.scenes[state.currentScene].splice(index, 1);
+      global.scenes.some(scene => {
+        if (scene.id === action.sceneId) {
+          scene.tracks.some((track, index) => {
+            if (track.id === action.trackId) {
+              scene.tracks.splice(index, 1);
+              return true;
+            }
+          });
           return true;
         }
       });
 
-      newStoreScenes[state.currentScene].some((track, index) => {
-        if (track.id === action.trackId) {
-          newStoreScenes[state.currentScene].splice(index, 1);
+      newStoreScenes.some(scene => {
+        if (scene.id === action.sceneId) {
+          scene.tracks.some((track, index) => {
+            if (track.id === action.trackId) {
+              scene.tracks.splice(index, 1);
+              return true;
+            }
+          });
           return true;
         }
       });
@@ -126,7 +146,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
-      newStoreScenes[state.currentScene].some(track => {
+      newStoreScenes[state.currentScene].tracks.some(track => {
         if (track.id === action.trackId) {
           track.mute = !track.mute;
           return true;
@@ -137,7 +157,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'SOLO_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
-      for (let track of newStoreScenes[state.currentScene]) {
+      for (let track of newStoreScenes[state.currentScene].tracks) {
         if (track.id === action.trackId) {
           track.solo = !track.solo;
         }

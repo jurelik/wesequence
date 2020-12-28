@@ -15,7 +15,7 @@ const Track = (props: any) => {
   }
 
   const handleDeleteButton = () => {
-    props.deleteTrack(props.id, true);
+    props.deleteTrack(props.scenes[props.scene].id, props.id, true);
   }
 
   return (
@@ -41,7 +41,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: SequencerStore) => {
   return {
-    scene: state.scenes
+    scenes: state.scenes
   }
 }
 

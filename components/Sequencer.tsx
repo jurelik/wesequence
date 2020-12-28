@@ -23,7 +23,7 @@ const Sequencer = (props: any) => {
   }
 
   const handleAddButton = () => {
-    props.addTrack(true);
+    props.addTrack(props.scenes[props.currentScene].id, true);
   }
 
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {

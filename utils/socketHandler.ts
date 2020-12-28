@@ -54,7 +54,7 @@ const socketHandler = () => {
         store.dispatch(changeGain(data.trackId, data.gain));
         break;
       case 'ADD_TRACK':
-        store.dispatch(addTrack(false, data.trackId, data.trackName))
+        store.dispatch(addTrack(data.sceneId, false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
         store.dispatch(deleteTrack(data.trackId, false))
