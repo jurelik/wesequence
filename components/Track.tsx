@@ -15,14 +15,14 @@ const Track = (props: any) => {
   }
 
   const handleDeleteButton = () => {
-    props.deleteTrack(props.scenes[props.scene].id, props.id, true);
+    props.deleteTrack(props.scenes[props.currentScene].id, props.id, true);
   }
 
   return (
     <div>
       <p>{props.name}</p>
       {props.sequence.map((step: number, index: number) => (
-        <Button key={index} id={index} value={step} trackId={props.id}/>
+        <Button key={index} id={index} value={step} currentScene={props.currentScene} trackId={props.id}/>
       ))}
       <GainSlider trackId={props.id}/>
       <LoadSound trackId={props.id}/>

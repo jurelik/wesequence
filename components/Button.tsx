@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
+import { SequencerStore } from 'redux/rootReducer';
 import { seqButtonPress } from 'redux/actions';
 
 const Button = (props: any) => {
   const handleOnClick = () => {
-    props.seqButtonPress(props.trackId, props.id, true);
+    props.seqButtonPress(props.scenes[props.currentScene].id, props.trackId, props.id, true);
   }
 
   return (
@@ -11,8 +12,14 @@ const Button = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: SequencerStore) => {
+  return {
+    scenes: state.scenes
+  }
+}
+
 const mapDispatchToProps = {
   seqButtonPress
 }
 
-export default connect(null, mapDispatchToProps)(Button);
+export default connect(mapStateToProps, mapDispatchToProps)(Button);

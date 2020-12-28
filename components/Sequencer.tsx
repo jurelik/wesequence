@@ -45,7 +45,7 @@ const Sequencer = (props: any) => {
         <SceneButton key={index} index={props.scenes.indexOf(scene)} />
       )) : null}
       {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
-        <Track key={track.id} id={track.id} name={track.name} scene={props.currentScene} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
+        <Track key={track.id} id={track.id} name={track.name} currentScene={props.currentScene} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
       )) : null}
     </div>
   )

@@ -76,7 +76,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, scenes: newStoreScenes }
     case 'SEQ_BUTTON_PRESS':
       newStoreScenes = [ ...state.scenes ];
-      newStoreScenes[state.currentScene].tracks.some(track => {
+      newStoreScenes[action.sceneId].tracks.some(track => {
         if (track.id === action.trackId) {
           track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
           return true;

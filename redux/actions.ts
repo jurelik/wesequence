@@ -88,11 +88,12 @@ export const changeGain = (trackId: number, gain: number, send?: boolean) => {
 
 }
 
-export const seqButtonPress = (trackId: number, position: number, send: boolean) => {
+export const seqButtonPress = (sceneId: number, trackId: number, position: number, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'SEQ_BUTTON_PRESS',
+      sceneId,
       trackId,
       position
     }));
@@ -100,6 +101,7 @@ export const seqButtonPress = (trackId: number, position: number, send: boolean)
 
   return {
     type: 'SEQ_BUTTON_PRESS',
+    sceneId,
     trackId,
     position
   }
