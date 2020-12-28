@@ -87,6 +87,9 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
         name: action.trackName,
         gain: global.context.createGain()
       }
+      newGlobalTrack.gain.connect(global.context.destination);
+      newGlobalTrack.gain.gain.value = 1 / 127 * 100;
+
       newStoreTrack = {
         id: action.trackId,
         name: action.trackName,

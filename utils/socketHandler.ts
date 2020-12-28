@@ -16,19 +16,19 @@ const socketHandler = () => {
           for (const scene of data.scenes) {
             //Load buffer into the global object
             for (const track of scene) {
+              const gainValue = track.gain; //Store the 0-127 value before reassigning it
+
               if (track.url) {
                 const sample = await fetch(track.url);
                 const arraybuffer = await sample.arrayBuffer();
                 const audiobuffer = await global.context.decodeAudioData(arraybuffer);
                 track.buffer = audiobuffer;
-
-                //Create a gain node
-                const gainValue = track.gain; //Store the 0-127 value before reassigning it
-
-                track.gain = global.context.createGain();
-                track.gain.connect(global.context.destination);
-                track.gain.gain.value = 1 / 127 * gainValue;
               }
+
+              //Create a gain node
+              track.gain = global.context.createGain();
+              track.gain.connect(global.context.destination);
+              track.gain.gain.value = 1 / 127 * gainValue;
 
               //Prevent storing the same information twice
               delete track['url'];
