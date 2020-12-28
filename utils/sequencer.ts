@@ -36,7 +36,7 @@ const sequencer = (command: string) => {
     }
 
     //Check if a track is solo-ed
-    scene.some((track) => {
+    scene.tracks.some((track) => {
       if (track.solo) {
         soloTrack = track;
         return true;
@@ -48,15 +48,15 @@ const sequencer = (command: string) => {
       if (soloTrack) {
         if (soloTrack.sequence[global.currentNote] === 1 && !soloTrack.mute) {
           //Find the track in the global object and play the sound from there
-          const globalTrack = global.scenes[_store.currentScene].find(_track => _track.id === soloTrack.id );
+          const globalTrack = global.scenes[_store.currentScene].tracks.find(_track => _track.id === soloTrack.id );
           playSound(global.nextNoteTime, globalTrack)
         }
       }
       else {
-        for (let track of scene) {
+        for (let track of scene.tracks) {
           if (track.sequence[global.currentNote] === 1 && !track.mute) {
             //Find the track in the global object and play the sound from there
-            const globalTrack = global.scenes[_store.currentScene].find(_track => _track.id === track.id );
+            const globalTrack = global.scenes[_store.currentScene].tracks.find(_track => _track.id === track.id );
             playSound(global.nextNoteTime, globalTrack)
           }
         }

@@ -10,7 +10,10 @@ type GlobalObject = {
 }
 
 export type GlobalScenes = GlobalScene[];
-export type GlobalScene = GlobalTrack[];
+export type GlobalScene = {
+  id: number,
+  tracks: GlobalTrack[]
+}
 export type GlobalTrack = {
   id: number,
   name: string,
@@ -20,7 +23,7 @@ export type GlobalTrack = {
 }
 
 const global: GlobalObject = {
-  scenes: [[]],
+  scenes: [],
   currentNote: 0,
   lookahead: 25.0,
   scheduleAheadTime: 0.1,

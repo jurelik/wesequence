@@ -15,7 +15,7 @@ const GainSlider = (props: any) => {
 const mapStateToProps = (state: SequencerStore, ownProps: any) => {
   let gain: number;
 
-  state.scenes[state.currentScene].some(track => {
+  state.scenes[state.currentScene].tracks.some(track => {
     if (track.id === ownProps.trackId) {
       gain = track.gain;
       return true;

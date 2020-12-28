@@ -15,7 +15,7 @@ const socketHandler = () => {
 
           for (const scene of data.scenes) {
             //Load buffer into the global object
-            for (const track of scene) {
+            for (const track of scene.tracks) {
               const gainValue = track.gain; //Store the 0-127 value before reassigning it
 
               if (track.url) {

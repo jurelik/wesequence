@@ -1,7 +1,10 @@
 import global, { GlobalTrack } from 'utils/global';
 
 type StoreScenes = StoreScene[];
-export type StoreScene = StoreTrack[];
+export type StoreScene = {
+  id: number,
+  tracks: StoreTrack[]
+};
 export type StoreTrack = {
   id: number,
   name: string,
@@ -25,7 +28,7 @@ type ReduxAction = {
 const initialState: SequencerStore = {
   isPlaying: false,
   tempo: 120,
-  scenes: [[]],
+  scenes: [],
   currentScene: 0
 }
 
@@ -36,6 +39,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
 
   switch (action.type) {
     case 'INIT':
+      console.log(action.scenes);
       return { ...state, tempo: action.tempo, scenes: action.scenes };
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
