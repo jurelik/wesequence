@@ -40,24 +40,24 @@ const socketHandler = () => {
         }
         break;
       case 'SEQ_BUTTON_PRESS':
-        store.dispatch(seqButtonPress(data.trackId, data.position, false));
+        store.dispatch(seqButtonPress(data.sceneId, data.trackId, data.position, false));
         break;
       case 'CHANGE_SOUND':
         //Create buffer
         const arraybuffer = stringToArraybuffer(data.arraybuffer);
-        store.dispatch(changeSoundReceive(data.trackId, arraybuffer));
+        store.dispatch(changeSoundReceive(data.sceneId, data.trackId, arraybuffer));
         break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));
         break;
       case 'CHANGE_GAIN':
-        store.dispatch(changeGain(data.trackId, data.gain));
+        store.dispatch(changeGain(data.sceneId, data.trackId, data.gain));
         break;
       case 'ADD_TRACK':
         store.dispatch(addTrack(data.sceneId, false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
-        store.dispatch(deleteTrack(data.trackId, false))
+        store.dispatch(deleteTrack(data.sceneId, data.trackId, false))
         break;
       case 'test':
         console.log('test')

@@ -4,7 +4,7 @@ import { changeGain } from 'redux/actions';
 
 const GainSlider = (props: any) => {
   const handleGainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeGain(props.trackId, parseInt(e.target.value), true);
+    props.changeGain(props.sceneId, props.trackId, parseInt(e.target.value), true);
   }
 
   return (

@@ -1,6 +1,8 @@
-import global, { GlobalTrack } from 'utils/global';
+import global, { GlobalTrack, GlobalScene } from 'utils/global';
+import { findGlobalTrack, findStoreTrack } from 'utils/findTrack';
+import { findGlobalScene, findStoreScene } from 'utils/findScene';
 
-type StoreScenes = StoreScene[];
+export type StoreScenes = StoreScene[];
 export type StoreScene = {
   id: number,
   tracks: StoreTrack[]
@@ -34,6 +36,8 @@ const initialState: SequencerStore = {
 
 const rootReducer = (state = initialState, action: ReduxAction) => {
   let newStoreScenes: StoreScene[];
+  let newStoreScene: StoreScene;
+  let newGlobalScene: GlobalScene;
   let newGlobalTrack: GlobalTrack;
   let newStoreTrack: StoreTrack;
 
@@ -47,41 +51,29 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'CHANGE_SCENE':
       return { ...state, currentScene: action.index };
     case 'CHANGE_SOUND':
-      global.scenes[state.currentScene].tracks.some(track => {
-        if (track.id === action.trackId) {
-          track.buffer = action.audiobuffer;
-          return true;
-        }
-      });
+      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
+      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
+      newGlobalTrack.buffer = action.audiobuffer;
+
       return state;
     case 'CHANGE_GAIN':
       newStoreScenes = [ ...state.scenes ];
 
-      //Calculate gain amount for the global object
-      global.scenes[state.currentScene].tracks.some(track => {
-        if (track.id === action.trackId) {
-          track.gain.gain.value = 1 / 127 * action.gain;
-          return true;
-        }
-      });
+      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
+      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
+      newGlobalTrack.gain.gain.value = 1 / 127 * action.gain;
 
-      //Update gain in the store
-      newStoreScenes[state.currentScene].tracks.some(track => {
-        if (track.id === action.trackId) {
-          track.gain = action.gain;
-          return true;
-        }
-      });
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreTrack = findStoreTrack(newStoreScene, action.trackId);
+      newStoreTrack.gain = action.gain;
 
       return { ...state, scenes: newStoreScenes }
     case 'SEQ_BUTTON_PRESS':
       newStoreScenes = [ ...state.scenes ];
-      newStoreScenes[action.sceneId].tracks.some(track => {
-        if (track.id === action.trackId) {
-          track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
-          return true;
-        }
-      });
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreTrack = findStoreTrack(newStoreScene, action.trackId);
+      newStoreTrack.sequence[action.position] = newStoreTrack.sequence[action.position] === 0 ? 1 : 0;
+
       return { ...state, scenes: newStoreScenes }
     case 'ADD_TRACK':
       newStoreScenes = [ ...state.scenes ];
@@ -100,58 +92,30 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
         gain: 100
       }
 
-      global.scenes.some(scene => {
-        if (scene.id === action.sceneId) {
-          scene.tracks.push(newGlobalTrack);
-          return true;
-        }
-      });
+      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
+      newGlobalScene.tracks.push(newGlobalTrack);
 
-      newStoreScenes.some(scene => {
-        if (scene.id === action.sceneId) {
-          scene.tracks.push(newStoreTrack);
-          return true;
-        }
-      });
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreScene.tracks.push(newStoreTrack);
 
       return { ...state, scenes: newStoreScenes }
     case 'DELETE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
-      global.scenes.some(scene => {
-        if (scene.id === action.sceneId) {
-          scene.tracks.some((track, index) => {
-            if (track.id === action.trackId) {
-              scene.tracks.splice(index, 1);
-              return true;
-            }
-          });
-          return true;
-        }
-      });
+      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
+      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
+      newGlobalScene.tracks.splice(newGlobalScene.tracks.indexOf(newGlobalTrack), 1);
 
-      newStoreScenes.some(scene => {
-        if (scene.id === action.sceneId) {
-          scene.tracks.some((track, index) => {
-            if (track.id === action.trackId) {
-              scene.tracks.splice(index, 1);
-              return true;
-            }
-          });
-          return true;
-        }
-      });
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreTrack = findStoreTrack(newStoreScene, action.trackId);
+      newStoreScene.tracks.splice(newStoreScene.tracks.indexOf(newStoreTrack), 1);
 
       return { ...state, scenes: newStoreScenes }
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
-      newStoreScenes[state.currentScene].tracks.some(track => {
-        if (track.id === action.trackId) {
-          track.mute = !track.mute;
-          return true;
-        }
-      });
+      newStoreTrack = findStoreTrack(newStoreScenes[state.currentScene], action.trackId);
+      newStoreTrack.mute = !newStoreTrack.mute;
 
       return { ...state, scenes: newStoreScenes }
     case 'SOLO_TRACK':

@@ -7,7 +7,7 @@ const LoadSound = (props: any) => {
       console.log('File size must be below 2MB.');
       return;
     }
-    props.changeSoundSend(props.trackId, e.target.files[0]);
+    props.changeSoundSend(props.sceneId, props.trackId, e.target.files[0]);
   }
 
   return (

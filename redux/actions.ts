@@ -28,7 +28,7 @@ export const changeScene = (index: number) => {
   }
 }
 
-export const changeSoundSend = (trackId: string, file: File) => {
+export const changeSoundSend = (sceneId: number, trackId: number, file: File) => {
   return async (dispatch) => {
     try {
       const arraybuffer = await file.arrayBuffer();
@@ -37,12 +37,14 @@ export const changeSoundSend = (trackId: string, file: File) => {
 
       global.socket.send(JSON.stringify({
         type:'CHANGE_SOUND',
+        sceneId,
         trackId,
         arraybuffer: arraybufferString
       }))
 
       dispatch({
         type: 'CHANGE_SOUND',
+        sceneId,
         trackId,
         audiobuffer
       });
@@ -53,13 +55,14 @@ export const changeSoundSend = (trackId: string, file: File) => {
   }
 }
 
-export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) => {
+export const changeSoundReceive = (sceneId: number, trackId: number, arraybuffer: ArrayBuffer) => {
   return async (dispatch) => {
     try {
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
 
       dispatch({
         type: 'CHANGE_SOUND',
+        sceneId,
         trackId,
         audiobuffer
       });
@@ -70,11 +73,12 @@ export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) =>
   }
 }
 
-export const changeGain = (trackId: number, gain: number, send?: boolean) => {
+export const changeGain = (sceneId: number, trackId: number, gain: number, send?: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'CHANGE_GAIN',
+      sceneId,
       trackId,
       gain
     }));
@@ -82,6 +86,7 @@ export const changeGain = (trackId: number, gain: number, send?: boolean) => {
 
   return {
     type: 'CHANGE_GAIN',
+    sceneId,
     trackId,
     gain
   }
