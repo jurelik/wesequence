@@ -1,6 +1,6 @@
 const setupSocket = (id: string | string[]) => {
   return new Promise<WebSocket>((resolve) => {
-    const socket = id ? new WebSocket(`ws://192.168.1.12:8080/${id}`) : new WebSocket('ws://localhost:8080');
+    const socket = id ? new WebSocket(`ws://${process.env.NEXT_PUBLIC_CONNECTION_URL}/${id}`) : new WebSocket(`ws://${process.env.NEXT_PUBLIC_CONNECTION_URL}`);
 
     socket.onopen = () => {
       console.log('Connected to server.');
