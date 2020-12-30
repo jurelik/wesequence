@@ -3,7 +3,7 @@ import { SequencerStore, StoreTrack, StoreScene } from 'redux/rootReducer';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
 import SceneButton from 'components/SceneButton';
-import { changeTempo, changeIsPlaying, addTrack } from 'redux/actions';
+import { changeTempo, changeIsPlaying, addTrack, addScene } from 'redux/actions';
 
 const Sequencer = (props: any) => {
   const handlePlayButton = () => {
@@ -22,8 +22,12 @@ const Sequencer = (props: any) => {
     props.changeIsPlaying(false);
   }
 
-  const handleAddButton = () => {
+  const handleAddTrackButton = () => {
     props.addTrack(props.scenes[props.currentScene].id, true);
+  }
+
+  const handleAddSceneButton = () => {
+    props.addScene(true);
   }
 
   const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,16 +38,18 @@ const Sequencer = (props: any) => {
     <div>
       <button onClick={handlePlayButton}>play</button>
       <button onClick={handleStopButton}>stop</button>
-      <button onClick={handleAddButton}>+</button>
+      <button onClick={handleAddTrackButton}>+</button>
       <input
         name="bpm"
         type="number"
         value={props.tempo}
         onChange={handleTempoChange}
+        style={{ marginRight: 100 }}
       />
       {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
         <SceneButton key={index} index={props.scenes.indexOf(scene)} />
       )) : null}
+      <button onClick={handleAddSceneButton}>+</button>
       {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
         <Track key={track.id} id={track.id} name={track.name} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
       )) : null}
@@ -60,6 +66,6 @@ const mapStateToProps = (state: SequencerStore) => {
   }
 }
 
-const mapDispatchToProps = { changeTempo, changeIsPlaying, addTrack };
+const mapDispatchToProps = { changeTempo, changeIsPlaying, addTrack, addScene };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sequencer);

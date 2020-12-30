@@ -1,7 +1,7 @@
 import global from 'utils/global';
 import { stringToArraybuffer } from 'utils/arraybuffer';
 import store from 'redux/store';
-import { seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack, changeGain } from 'redux/actions';
+import { seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack, addScene, changeGain } from 'redux/actions';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -59,6 +59,8 @@ const socketHandler = () => {
       case 'DELETE_TRACK':
         store.dispatch(deleteTrack(data.sceneId, data.trackId, false))
         break;
+      case 'ADD_SCENE':
+        store.dispatch(addScene(false, data.sceneId));
       case 'test':
         console.log('test')
         break;

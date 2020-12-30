@@ -111,6 +111,13 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScene.tracks.splice(newStoreScene.tracks.indexOf(newStoreTrack), 1);
 
       return { ...state, scenes: newStoreScenes }
+    case 'ADD_SCENE':
+      newStoreScenes = [ ...state.scenes ];
+      newStoreScenes.push({ id: action.sceneId, tracks: [] });
+
+      global.scenes.push({ id: action.sceneId, tracks: [] });
+
+      return { ...state, scenes: newStoreScenes }
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
