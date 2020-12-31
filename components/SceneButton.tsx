@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { SequencerStore } from 'redux/rootReducer';
 import { changeScene, deleteScene } from 'redux/actions';
 
 const SceneButton = (props) => {
@@ -13,9 +14,17 @@ const SceneButton = (props) => {
   return (
     <div style={{ display: 'inline', marginRight: 20 }}>
       <button onClick={handleSceneButton}>Scene {props.index + 1}</button>
-      <button onClick={deleteSceneButton}>x</button>
+      {props.scenes.length > 1 &&
+        <button onClick={deleteSceneButton}>x</button>
+      }
     </div>
   )
+}
+
+const mapStateToProps = (state: SequencerStore) => {
+  return {
+    scenes: state.scenes
+  }
 }
 
 const mapDispatchToProps = {
@@ -23,4 +32,4 @@ const mapDispatchToProps = {
   deleteScene
 }
 
-export default connect(null, mapDispatchToProps)(SceneButton);
+export default connect(mapStateToProps, mapDispatchToProps)(SceneButton);
