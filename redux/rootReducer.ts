@@ -118,6 +118,16 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       global.scenes.push({ id: action.sceneId, tracks: [] });
 
       return { ...state, scenes: newStoreScenes }
+    case 'DELETE_SCENE':
+      newStoreScenes = [ ...state.scenes ];
+
+      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
+      global.scenes.splice(global.scenes.indexOf(newGlobalScene), 1);
+
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreScenes.splice(newStoreScenes.indexOf(newStoreScene), 1);
+
+      return { ...state, scenes: newStoreScenes }
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 

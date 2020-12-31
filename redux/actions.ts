@@ -164,6 +164,21 @@ export const addScene = (send: boolean, sceneId?: number) => {
   }
 }
 
+export const deleteScene = (send: boolean, sceneId?: number) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'DELETE_SCENE',
+      sceneId
+    }));
+  }
+
+  return {
+    type: 'DELETE_SCENE',
+    sceneId
+  }
+}
+
 export const muteTrack = (trackId: number) => {
   return {
     type: 'MUTE_TRACK',

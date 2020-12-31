@@ -44,10 +44,10 @@ const Sequencer = (props: any) => {
         type="number"
         value={props.tempo}
         onChange={handleTempoChange}
-        style={{ marginRight: 100 }}
+        style={{ marginRight: 20 }}
       />
       {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
-        <SceneButton key={index} index={props.scenes.indexOf(scene)} />
+        <SceneButton key={index} index={props.scenes.indexOf(scene)} sceneId={props.scenes[props.currentScene].id} />
       )) : null}
       <button onClick={handleAddSceneButton}>+</button>
       {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
