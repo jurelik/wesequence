@@ -8,7 +8,9 @@ const SceneButton = (props) => {
   }
 
   const deleteSceneButton = () => {
-    props.deleteScene(true, props.sceneId);
+    if (props.scenes.length > 1) {
+      props.deleteScene(true, props.sceneId);
+    }
   }
 
   return (
