@@ -40,6 +40,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
   let newGlobalScene: GlobalScene;
   let newGlobalTrack: GlobalTrack;
   let newStoreTrack: StoreTrack;
+  let newCurrentScene: number;
 
   switch (action.type) {
     case 'INIT':
@@ -120,6 +121,12 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       return { ...state, scenes: newStoreScenes }
     case 'DELETE_SCENE':
       newStoreScenes = [ ...state.scenes ];
+      newCurrentScene = state.currentScene;
+
+      //If the deleted scene index is lower than the currentScene index, decrement the currentScene value
+      if (newStoreScenes.indexOf(newStoreScene) <= newCurrentScene && !newStoreScenes[newCurrentScene + 1]) {
+        newCurrentScene--;
+      }
 
       newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
       global.scenes.splice(global.scenes.indexOf(newGlobalScene), 1);
@@ -127,7 +134,7 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
       newStoreScenes.splice(newStoreScenes.indexOf(newStoreScene), 1);
 
-      return { ...state, scenes: newStoreScenes }
+      return { ...state, scenes: newStoreScenes, currentScene: newCurrentScene }
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 
