@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.css';
+import {} from 'redux/actions';
 
-export default function Home() {
+const Home = () => {
   const handleCreateRoom = () => {
 
   }
@@ -20,3 +21,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home;
