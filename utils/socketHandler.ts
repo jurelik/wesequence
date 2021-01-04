@@ -71,13 +71,15 @@ const socketHandler = () => {
       case 'DELETE_SCENE':
         store.dispatch(deleteScene(false, data.sceneId));
         break;
-      case 'test':
-        console.log('test')
-        break;
       default:
         console.log('default');
         break;
     }
+  }
+
+  global.socket.onclose = () => {
+    console.log('Connection to server closed.');
+    global.socket = undefined;
   }
 }
 

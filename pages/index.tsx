@@ -1,11 +1,18 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
 import store from 'redux/store';
+import global from 'utils/global';
 
 const Home = () => {
   const router = useRouter();
   const [room, setRoom] = useState('');
+
+  useEffect(() => {
+    if (global.socket) {
+      global.socket.close();
+    }
+  }, [])
 
   const handleCreateRoom = async () => {
     try {
