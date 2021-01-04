@@ -8,7 +8,13 @@ const socketHandler = () => {
     const data = JSON.parse(e.data);
 
     switch (data.type) {
-      case 'init':
+      case 'INIT':
+        //Handle error
+        if (data.err) {
+          store.dispatch({ type: 'INIT', err: data.err });
+          break;
+        }
+
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });

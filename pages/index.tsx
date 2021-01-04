@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import styles from '../styles/Home.module.css';
-import {} from 'redux/actions';
+import store from 'redux/store';
 
 const Home = () => {
   const router = useRouter();
+  const [room, setRoom] = useState('');
 
   const handleCreateRoom = async () => {
     try {
@@ -23,7 +25,12 @@ const Home = () => {
   }
 
   const handleJoinRoom = () => {
+    store.dispatch({ type: 'RESET_ERR_LOADING' });
+    router.push(`/${room}`);
+  }
 
+  const handleInputChange = (e) => {
+    setRoom(e.target.value);
   }
 
   return (
@@ -31,8 +38,8 @@ const Home = () => {
       <button onClick={handleCreateRoom}>Create a Room</button>
       <p>or</p>
       <div style={{ display: 'flex' }}>
-        <input />
-        <button>Join a Room</button>
+        <input value={room} onChange={handleInputChange}/>
+        <button onClick={handleJoinRoom}>Join a Room</button>
       </div>
     </div>
   )
