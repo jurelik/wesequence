@@ -31,6 +31,19 @@ export const changeScene = (index: number) => {
 export const changeSoundSend = (sceneId: number, trackId: number, file: File) => {
   return async (dispatch) => {
     try {
+      //Get file type
+      let fileType: string;
+
+      if (file.type === 'audio/wav' || file.type === 'audio/x-wav') {
+        fileType = 'audio/wav';
+      }
+      else if (file.type === 'audio/mpeg') {
+        fileType = 'audio/mpeg';
+      }
+      else {
+        throw 'Wrong file type.';
+      }
+
       const arraybuffer = await file.arrayBuffer();
       const arraybufferString = arraybufferToString(arraybuffer);
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
@@ -39,6 +52,7 @@ export const changeSoundSend = (sceneId: number, trackId: number, file: File) =>
         type:'CHANGE_SOUND',
         sceneId,
         trackId,
+        fileType,
         arraybuffer: arraybufferString
       }))
 

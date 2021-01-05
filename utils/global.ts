@@ -1,5 +1,5 @@
 type GlobalObject = {
-  context?: BaseAudioContext,
+  context?: AudioContext,
   socket?: WebSocket,
   scenes: GlobalScenes,
   currentNote: number,

@@ -1,4 +1,5 @@
 import global, { GlobalTrack } from 'utils/global';
+import { StoreTrack } from 'redux/rootReducer';
 import store from 'redux/store';
 
 const sequencer = (command: string) => {
@@ -25,7 +26,7 @@ const sequencer = (command: string) => {
   const scheduler = () => {
     const _store = store.getState();
     const scene = _store.scenes[_store.currentScene];
-    let soloTrack;
+    let soloTrack: StoreTrack;
 
     //Stop the scheduler if there are no active tracks
     if (scene.length === 0) {
@@ -36,7 +37,7 @@ const sequencer = (command: string) => {
     }
 
     //Check if a track is solo-ed
-    scene.tracks.some((track) => {
+    scene.tracks.some((track: StoreTrack) => {
       if (track.solo) {
         soloTrack = track;
         return true;
@@ -71,6 +72,11 @@ const sequencer = (command: string) => {
     if (store.getState().scenes[store.getState().currentScene].length === 0) {
       console.log('No active tracks.');
       return;
+    }
+
+    //Resume if suspended (Chrome suspends the audio context by default on first load)
+    if (global.context.state === 'suspended') {
+      global.context.resume();
     }
 
     global.nextNoteTime = global.context.currentTime;
