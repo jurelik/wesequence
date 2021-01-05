@@ -5,5 +5,5 @@ export const arraybufferToString = (buffer: ArrayBuffer) => {
 }
 
 export const stringToArraybuffer = (string: string) => {
-  return decode(buffer);
+  return decode(string);
 }
