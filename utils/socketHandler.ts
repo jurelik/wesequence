@@ -8,6 +8,11 @@ const socketHandler = () => {
     const data = JSON.parse(e.data);
 
     switch (data.type) {
+      case 'ping': //Keep the connection alive by sending pong messages (required by Heroku)
+        global.socket.send(JSON.stringify({
+          type:'pong',
+        }));
+        break;
       case 'INIT':
         //Handle error
         if (data.err) {
