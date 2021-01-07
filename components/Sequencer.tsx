@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { SequencerStore, StoreTrack, StoreScene } from 'redux/rootReducer';
+import { Button, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react';
 import sequencer from 'utils/sequencer';
 import Track from 'components/Track';
 import SceneButton from 'components/SceneButton';
@@ -30,27 +31,38 @@ const Sequencer = (props: any) => {
     props.addScene(true);
   }
 
-  const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeTempo(parseInt(event.target.value), true);
+  const handleTempoChange = (event: string) => {
+    props.changeTempo(parseInt(event), true);
   }
 
   return (
     <div>
-      <button onClick={handlePlayButton}>play</button>
-      <button onClick={handleStopButton}>stop</button>
-      <button onClick={handleAddTrackButton}>+</button>
-      <input
-        name="bpm"
-        type="number"
-        value={props.tempo}
-        onChange={handleTempoChange}
-        style={{ marginRight: 20 }}
-      />
-      {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
-        <SceneButton key={index} index={props.scenes.indexOf(scene)} sceneId={scene.id} />
-      )) : null}
-      <button onClick={handleAddSceneButton}>+</button>
-      <h3>Scene {props.currentScene + 1}</h3>
+      <div style={{ display: 'flex' }}>
+        <Button size="sm" onClick={handlePlayButton}>play</Button>
+        <Button size="sm" onClick={handleStopButton}>stop</Button>
+        <Button size="sm" onClick={handleAddTrackButton}>+</Button>
+        <NumberInput
+          size="sm"
+          w={100}
+          focusInputOnChange={false}
+          name="bpm"
+          type="number"
+          value={props.tempo}
+          onChange={handleTempoChange}
+          style={{ marginRight: 20 }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
+          <SceneButton key={index} index={props.scenes.indexOf(scene)} sceneId={scene.id} />
+        )) : null}
+        <Button size="sm" onClick={handleAddSceneButton}>+</Button>
+      </div>
+      <h1>Scene {props.currentScene + 1}</h1>
       {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
         <Track key={track.id} id={track.id} name={track.name} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
       )) : null}

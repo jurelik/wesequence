@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { Button } from '@chakra-ui/react';
 import { SequencerStore } from 'redux/rootReducer';
 import { changeScene, deleteScene } from 'redux/actions';
 
@@ -15,9 +16,9 @@ const SceneButton = (props) => {
 
   return (
     <div style={{ display: 'inline', marginRight: 20 }}>
-      <button onClick={handleSceneButton}>Scene {props.index + 1}</button>
+      <Button size="sm" onClick={handleSceneButton}>Scene {props.index + 1}</Button>
       {props.scenes.length > 1 &&
-        <button onClick={deleteSceneButton}>x</button>
+        <Button size="sm" onClick={deleteSceneButton}>x</Button>
       }
     </div>
   )

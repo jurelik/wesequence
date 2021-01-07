@@ -1,14 +1,20 @@
 import { connect } from 'react-redux';
+import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
 import { SequencerStore } from 'redux/rootReducer';
 import { changeGain } from 'redux/actions';
 
 const GainSlider = (props: any) => {
-  const handleGainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.changeGain(props.sceneId, props.trackId, parseInt(e.target.value), true);
+  const handleGainChange = (value: number) => {
+    props.changeGain(props.sceneId, props.trackId, value, true);
   }
 
   return (
-    <input type="range" min={0} max={127} value={props.gain} onChange={handleGainChange} />
+    <Slider aria-label="volume-slider" w={150} mx={3} min={0} max={127} value={props.gain} onChange={handleGainChange}>
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
+      <SliderThumb />
+    </Slider>
   )
 }
 
