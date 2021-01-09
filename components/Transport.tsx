@@ -55,10 +55,6 @@ const Transport = (props) => {
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
-        <SceneButton key={index} index={props.scenes.indexOf(scene)} sceneId={scene.id} />
-      )) : null}
-      <Button size="sm" onClick={handleAddSceneButton}>+</Button>
     </div>
   )
 }
@@ -73,6 +69,5 @@ const mapStateToProps = (state: SequencerStore) => {
 }
 
 const mapDispatchToProps = { changeTempo, changeIsPlaying, addTrack, addScene };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transport);

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import { SequencerStore } from 'redux/rootReducer';
 import { changeScene, deleteScene } from 'redux/actions';
 
@@ -15,18 +15,21 @@ const SceneButton = (props) => {
   }
 
   return (
-    <div style={{ display: 'inline', marginRight: 20 }}>
-      <Button size="sm" onClick={handleSceneButton}>Scene {props.index + 1}</Button>
-      {props.scenes.length > 1 &&
-        <Button size="sm" onClick={deleteSceneButton}>x</Button>
-      }
+    <div style={{ marginRight: 20 }}>
+      <ButtonGroup size="sm" isAttached>
+        <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={handleSceneButton}>Scene {props.index + 1}</Button>
+        {props.scenes.length > 1 &&
+          <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={deleteSceneButton}>x</Button>
+        }
+      </ButtonGroup>
     </div>
   )
 }
 
 const mapStateToProps = (state: SequencerStore) => {
   return {
-    scenes: state.scenes
+    scenes: state.scenes,
+    currentScene: state.currentScene
   }
 }
 

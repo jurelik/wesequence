@@ -20,7 +20,7 @@ const Track = (props: any) => {
   }
 
   return (
-    <div style={{ marginBottom: 10 }}>
+    <div style={{ marginBottom: 10, marginLeft: 10 }}>
       <p>{props.name}</p>
       <Flex alignItems="center">
         {props.sequence.map((step: number, index: number) => (

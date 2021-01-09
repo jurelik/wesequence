@@ -6,13 +6,18 @@ const DownloadButton = () => {
 
   const handleDownloadButton = async () => {
     let a = document.createElement('a');
-    a.target= '_blank';
+    a.target= 'iframe';
+    a.download = '';
     a.href= `${process.env.NODE_ENV === 'production' ? 'https' : 'http'}://${process.env.NEXT_PUBLIC_CONNECTION_URL}/api/download/${router.query.id}`;
     a.click();
   }
 
   return (
-    <Button pos="absolute" top={0} right={0} size="sm" onClick={handleDownloadButton}>Download</Button>
+    <>
+      {/*iframe hack to avoid opening the download in a new tab*/}
+      <iframe name="iframe" style={{ display: 'none' }}></iframe>
+      <Button pos="absolute" top={0} right={0} size="sm" onClick={handleDownloadButton}>Download</Button>
+    </>
   )
 }
 
