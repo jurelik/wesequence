@@ -11,6 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     if (global.socket) {
+      store.dispatch({ type: 'RESET_ERR_LOADING' });
       global.socket.close();
     }
   }, [])
