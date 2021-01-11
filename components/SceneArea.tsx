@@ -12,7 +12,7 @@ const SceneArea = (props) => {
   return (
     <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10 }}>
       {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
-        <SceneButton key={index} index={index} sceneId={scene.id} />
+        <SceneButton key={index} index={index} name={scene.name} sceneId={scene.id} />
       )) : null}
       <Button size="sm" onClick={handleAddSceneButton}>+</Button>
     </div>

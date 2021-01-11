@@ -25,6 +25,8 @@ const socketHandler = () => {
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
           for (const scene of data.scenes) {
+            delete scene['name'];
+
             //Load buffer into the global object
             for (const track of scene.tracks) {
               const gainValue = track.gain; //Store the 0-127 value before reassigning it

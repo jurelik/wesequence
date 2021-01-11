@@ -17,7 +17,7 @@ const SceneButton = (props) => {
   return (
     <div style={{ marginRight: 20 }}>
       <ButtonGroup size="sm" isAttached>
-        <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={handleSceneButton}>Scene {props.index + 1}</Button>
+        <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={handleSceneButton}>{props.name ? props.name : `Scene ${props.index + 1}`}</Button>
         {props.scenes.length > 1 &&
           <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={deleteSceneButton}>x</Button>
         }

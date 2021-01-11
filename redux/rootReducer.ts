@@ -5,6 +5,7 @@ import { findGlobalScene, findStoreScene } from 'utils/findScene';
 export type StoreScenes = StoreScene[];
 export type StoreScene = {
   id: number,
+  name?: string,
   tracks: StoreTrack[]
 };
 export type StoreTrack = {
