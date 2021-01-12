@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
-import { SequencerStore, StoreScene } from 'redux/rootReducer';
+import { useState } from 'react';
+import { SequencerStore } from 'redux/rootReducer';
 import { Button, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react';
 import sequencer from 'utils/sequencer';
-import SceneButton from 'components/SceneButton';
 import { changeTempo, changeIsPlaying, addTrack, addScene } from 'redux/actions';
 
 const Transport = (props) => {
+  const [firstLoad, setFirstLoad] = useState(true);
+
   const handlePlayButton = () => {
     if (!props.isPlaying) {
       sequencer('start');
@@ -26,12 +28,12 @@ const Transport = (props) => {
     props.addTrack(props.scenes[props.currentScene].id, true);
   }
 
-  const handleAddSceneButton = () => {
-    props.addScene(true);
-  }
+  const handleTempoChange = (valueStr: string, valueNum: number) => {
+    if(firstLoad) {
+      return setFirstLoad(false);
+    }
 
-  const handleTempoChange = (event: string) => {
-    props.changeTempo(parseInt(event), true);
+    props.changeTempo(valueNum, true);
   }
 
   return (
@@ -43,8 +45,6 @@ const Transport = (props) => {
         size="sm"
         w={100}
         focusInputOnChange={false}
-        name="bpm"
-        type="number"
         value={props.tempo}
         onChange={handleTempoChange}
         style={{ marginRight: 20 }}

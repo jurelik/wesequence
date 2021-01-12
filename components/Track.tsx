@@ -1,9 +1,11 @@
 import { connect } from 'react-redux';
+import { useState } from 'react';
 import { SequencerStore } from 'redux/rootReducer';
-import { Flex, Button } from '@chakra-ui/react';
+import { Flex, Button, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
 import SequenceButton from 'components/SequenceButton';
 import LoadSound from 'components/LoadSound';
 import GainSlider from 'components/GainSlider';
+import TrackName from 'components/TrackName';
 import { deleteTrack, muteTrack, soloTrack } from 'redux/actions';
 
 const Track = (props: any) => {
@@ -21,7 +23,7 @@ const Track = (props: any) => {
 
   return (
     <div style={{ marginBottom: 10, marginLeft: 10 }}>
-      <p>{props.name}</p>
+      <TrackName name={props.name} sceneId={props.sceneId} trackId={props.id} />
       <Flex alignItems="center">
         {props.sequence.map((step: number, index: number) => (
           <SequenceButton key={index} id={index} value={step} sceneId={props.sceneId} trackId={props.id}/>

@@ -162,6 +162,25 @@ export const deleteTrack = (sceneId: number,trackId: number, send: boolean) => {
   }
 }
 
+export const changeTrackName = (sceneId: number, trackId: number, name: string, send: boolean) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'CHANGE_TRACK_NAME',
+      sceneId,
+      trackId,
+      name
+    }));
+  }
+
+  return {
+    type: 'CHANGE_TRACK_NAME',
+    sceneId,
+    trackId,
+    name
+  }
+}
+
 export const addScene = (send: boolean, sceneId?: number) => {
   // Send action via ws
   if (send) {
