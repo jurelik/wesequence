@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { useState } from 'react';
 import { SequencerStore } from 'redux/rootReducer';
-import { Flex, Button, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
+import { Flex, Button, Icon, IconButton } from '@chakra-ui/react';
+import { FaTimes } from 'react-icons/fa';
 import SequenceButton from 'components/SequenceButton';
 import LoadSound from 'components/LoadSound';
 import GainSlider from 'components/GainSlider';
@@ -30,9 +30,9 @@ const Track = (props: any) => {
         ))}
         <GainSlider sceneId={props.sceneId} trackId={props.id}/>
         <LoadSound sceneId={props.sceneId} trackId={props.id}/>
-        <Button size="xs" onClick={handleMuteButton} style={{ backgroundColor: props.mute ? 'red' : null }}>M</Button>
-        <Button size="xs" onClick={handleSoloButton} style={{ backgroundColor: props.solo ? 'yellow' : null }}>S</Button>
-        <Button size="xs" onClick={handleDeleteButton}>x</Button>
+        <Button size="xs" onClick={handleMuteButton} fontWeight="bold" style={{ backgroundColor: props.mute ? 'red' : null }}>M</Button>
+        <Button size="xs" onClick={handleSoloButton} fontWeight="bold" style={{ backgroundColor: props.solo ? 'yellow' : null }}>S</Button>
+        <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
       </Flex>
     </div>
   )

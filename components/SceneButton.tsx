@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Icon, IconButton, Button, ButtonGroup } from '@chakra-ui/react';
+import { FaTimes } from 'react-icons/fa';
 import { SequencerStore } from 'redux/rootReducer';
 import { changeScene, deleteScene } from 'redux/actions';
 
@@ -19,7 +20,7 @@ const SceneButton = (props) => {
       <ButtonGroup size="sm" isAttached>
         <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={handleSceneButton}>{props.name ? props.name : `Scene ${props.index + 1}`}</Button>
         {props.scenes.length > 1 &&
-          <Button colorScheme={props.index === props.currentScene ? "blue" : null} onClick={deleteSceneButton}>x</Button>
+        <IconButton aria-label="Delete Scene" colorScheme={props.index === props.currentScene ? "blue" : null} onClick={deleteSceneButton} icon={<Icon as={FaTimes} />} />
         }
       </ButtonGroup>
     </div>

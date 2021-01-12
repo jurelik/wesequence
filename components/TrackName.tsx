@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Flex, IconButton, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
+import { Flex, Icon, IconButton, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
 import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import { changeTrackName } from 'redux/actions';
 
@@ -7,11 +7,11 @@ const TrackName = (props: any) => {
   const EditableControls = ({ isEditing, onSubmit, onCancel, onEdit }) => {
     return isEditing ? (
       <Flex direction="row" ml={2}>
-        <IconButton aria-label="Submit" size="xs" onClick={onSubmit} icon={<FaCheck />}/>
-        <IconButton aria-label="Cancel" size="xs" onClick={onCancel} icon={<FaTimes />} />
+        <IconButton aria-label="Submit" size="xs" onClick={onSubmit} icon={<Icon as={FaCheck} />}/>
+        <IconButton aria-label="Cancel" size="xs" onClick={onCancel} icon={<Icon as={FaTimes} />} />
       </Flex>
     ) : (
-      <IconButton aria-label="Change Track Name" size="xs" ml={2} onClick={onEdit} icon={<FaEdit />} variant="ghost"/>
+      <IconButton aria-label="Change Track Name" size="xs" ml={2} onClick={onEdit} icon={<Icon as={FaEdit} />} variant="ghost"/>
     )
   }
 
