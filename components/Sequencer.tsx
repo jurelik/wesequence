@@ -12,10 +12,12 @@ const Sequencer = (props: any) => {
         <Transport />
         <DownloadButton  />
       </header>
-      <SceneArea />
-      {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
-        <Track key={track.id} id={track.id} name={track.name} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
-      )) : null}
+      <main>
+        <SceneArea />
+        {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
+          <Track key={track.id} id={track.id} name={track.name} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
+        )) : null}
+      </main>
     </div>
   )
 }
