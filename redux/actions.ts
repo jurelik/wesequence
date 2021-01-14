@@ -197,7 +197,7 @@ export const addScene = (send: boolean, sceneId?: number) => {
   }
 }
 
-export const deleteScene = (send: boolean, sceneId?: number) => {
+export const deleteScene = (send: boolean, sceneId: number) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
@@ -209,6 +209,23 @@ export const deleteScene = (send: boolean, sceneId?: number) => {
   return {
     type: 'DELETE_SCENE',
     sceneId
+  }
+}
+
+export const changeSceneName = (sceneId: number, name: string,  send: boolean) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'CHANGE_SCENE_NAME',
+      sceneId,
+      name
+    }));
+  }
+
+  return {
+    type: 'CHANGE_SCENE_NAME',
+    sceneId,
+    name
   }
 }
 

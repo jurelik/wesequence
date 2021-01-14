@@ -152,6 +152,13 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       newStoreScenes.splice(newStoreScenes.indexOf(newStoreScene), 1);
 
       return { ...state, scenes: newStoreScenes, currentScene: newCurrentScene }
+    case 'CHANGE_SCENE_NAME':
+      newStoreScenes = [ ...state.scenes ];
+
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreScene.name = action.name;
+
+      return { ...state, scenes: newStoreScenes }
     case 'MUTE_TRACK':
       newStoreScenes = [ ...state.scenes ];
 

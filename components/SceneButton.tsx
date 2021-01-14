@@ -3,10 +3,10 @@ import { useRef } from 'react';
 import { Flex, Input, Icon, IconButton, Button, ButtonGroup, Popover, PopoverBody, PopoverTrigger, PopoverContent, PopoverArrow } from '@chakra-ui/react';
 import { FaTimes, FaEdit, FaCheck } from 'react-icons/fa';
 import { SequencerStore } from 'redux/rootReducer';
-import { changeScene, deleteScene } from 'redux/actions';
+import { changeScene, deleteScene, changeSceneName } from 'redux/actions';
 
 const SceneButton = (props) => {
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSceneButton = () => {
@@ -21,9 +21,9 @@ const SceneButton = (props) => {
 
   const handleChangeName = (e:React.FormEvent<HTMLFormElement>, onClose: Function) => {
     e.preventDefault();
-    onClose();
+    props.changeSceneName(props.sceneId, inputRef.current.value, true);
 
-    console.log('hi')
+    onClose();
   }
 
   const handlePopoverClose = () => {
@@ -71,7 +71,8 @@ const mapStateToProps = (state: SequencerStore) => {
 
 const mapDispatchToProps = {
   changeScene,
-  deleteScene
+  deleteScene,
+  changeSceneName
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SceneButton);
