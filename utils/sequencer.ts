@@ -79,7 +79,7 @@ const sequencer = (command: string) => {
       global.context.resume();
     }
 
-    global.nextNoteTime = global.context.currentTime;
+    global.nextNoteTime = global.context.currentTime + 0.05;
     scheduler(); // kick off scheduling
   }
   else {
