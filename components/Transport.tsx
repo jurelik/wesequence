@@ -39,9 +39,9 @@ const Transport = (props) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <IconButton aria-label="Play" size="xs" onClick={handlePlayButton} icon={<Icon as={FaPlay} color={props.isPlaying ? "green.300" : null}/>}/>
-      <IconButton aria-label="Stop" size="xs" onClick={handleStopButton} icon={<Icon as={FaStop} />} />
-      <IconButton aria-label="Add Track" size="xs" onClick={handleAddTrackButton} icon={<Icon as={FaPlus} />} />
+      <IconButton aria-label="Play" size="xs" borderRadius="0" onClick={handlePlayButton} icon={<Icon as={FaPlay} color={props.isPlaying ? "green.300" : null}/>}/>
+      <IconButton aria-label="Stop" size="xs" borderRadius="0" onClick={handleStopButton} icon={<Icon as={FaStop} />} />
+      <IconButton aria-label="Add Track" size="xs" borderRadius="0" onClick={handleAddTrackButton} icon={<Icon as={FaPlus} />} />
       <NumberInput
         size="xs"
         w={100}
