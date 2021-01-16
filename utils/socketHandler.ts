@@ -22,7 +22,6 @@ const socketHandler = () => {
 
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
-          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
 
           for (const scene of data.scenes) {
             delete scene['name'];
@@ -50,6 +49,7 @@ const socketHandler = () => {
           }
 
           global.scenes = data.scenes;
+          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
         }
         break;
       case 'SEQ_BUTTON_PRESS':

@@ -26,6 +26,7 @@ const sequencer = (command: string) => {
   const scheduler = () => {
     const _store = store.getState();
     const scene = _store.scenes[_store.currentScene];
+
     let soloTrack: StoreTrack;
 
     //Stop the scheduler if there are no active tracks
