@@ -7,15 +7,22 @@ import setupWebAudio from 'utils/setupWebAudio';
 import socketHandler from 'utils/socketHandler';
 import Sequencer from 'components/Sequencer';
 import { SequencerStore } from 'redux/rootReducer'
+import { handleInitError } from 'redux/actions';
 
 const Room = (props) => {
   const router = useRouter();
 
   useEffect(() => {
     const setup = async () => {
-      global.context = setupWebAudio();
-      global.socket = await setupSocket(router.query.id);
-      socketHandler();
+      try {
+        global.context = setupWebAudio();
+        global.socket = await setupSocket(router.query.id);
+        socketHandler();
+      }
+      catch (err) {
+        //Handle error
+        props.handleInitError(err);
+      }
     }
 
     // Wait until we get the router object populated
@@ -42,4 +49,8 @@ const mapStateToProps = (state: SequencerStore) => {
   }
 }
 
-export default connect(mapStateToProps)(Room);
+const mapDispatchToProps = {
+  handleInitError
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Room);

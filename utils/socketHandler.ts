@@ -1,7 +1,7 @@
 import global from 'utils/global';
 import { stringToArraybuffer } from 'utils/arraybuffer';
 import store from 'redux/store';
-import { seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack, changeTrackName, addScene, deleteScene, changeSceneName, changeGain } from 'redux/actions';
+import { handleInitError, seqButtonPress, changeSoundReceive, changeTempo, addTrack, deleteTrack, changeTrackName, addScene, deleteScene, changeSceneName, changeGain } from 'redux/actions';
 
 const socketHandler = () => {
   global.socket.onmessage = async (e) => {
@@ -16,7 +16,7 @@ const socketHandler = () => {
       case 'INIT':
         //Handle error
         if (data.err) {
-          store.dispatch({ type: 'INIT', err: data.err });
+          store.dispatch(handleInitError(data.err));
           break;
         }
 

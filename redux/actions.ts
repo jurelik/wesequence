@@ -1,6 +1,13 @@
 import global from 'utils/global';
 import { arraybufferToString } from 'utils/arraybuffer';
 
+export const handleInitError = (err: string) => {
+  return {
+    type: 'INIT',
+    err
+  }
+}
+
 export const changeTempo = (tempo: number, send: boolean) => {
   // Send action via ws
   if (send) {
