@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Flex, Input, Icon, IconButton, Popover, PopoverBody, PopoverTrigger, PopoverContent, PopoverArrow } from '@chakra-ui/react';
 import { FaEdit, FaCheck } from 'react-icons/fa';
 import { SequencerStore } from 'redux/rootReducer';
+import { removeListener, addListener } from 'utils/handlePlayStop';
 import { changeSceneName } from 'redux/actions';
 
 const ScenePopover = (props) => {
@@ -17,11 +18,16 @@ const ScenePopover = (props) => {
   }
 
   const handlePopoverClose = () => {
+    addListener();
     formRef && formRef.current ? formRef.current.reset() : null;
   }
 
+  const handlePopoverOpen = () => {
+    removeListener();
+  }
+
   return (
-    <Popover initialFocusRef={inputRef} returnFocusOnClose={false} onClose={handlePopoverClose}>
+    <Popover initialFocusRef={inputRef} returnFocusOnClose={false} onOpen={handlePopoverOpen} onClose={handlePopoverClose}>
       {({ onClose }) => (
         <>
           <PopoverTrigger>

@@ -1,4 +1,5 @@
-import '../styles/globals.css'
+import "focus-visible/dist/focus-visible";
+import '../styles/globals.css';
 import { Provider  } from "react-redux";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import store from "redux/store";
