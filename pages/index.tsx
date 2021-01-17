@@ -33,7 +33,9 @@ const Home = () => {
     }
   }
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     store.dispatch({ type: 'RESET_ERR_LOADING' });
     router.push(`/${room}`);
   }
@@ -46,10 +48,10 @@ const Home = () => {
     <div className={styles.container}>
       <Button size="sm" onClick={handleCreateRoom}>Create a Room</Button>
       <p>or</p>
-      <div style={{ display: 'flex' }}>
+      <form style={{ display: 'flex' }} onSubmit={handleJoinRoom}>
         <Input size="sm" flex={1} value={room} onChange={handleInputChange}/>
-        <Button size="sm" flex={1} onClick={handleJoinRoom}>Join a Room</Button>
-      </div>
+        <Button size="sm" flex={1} type="submit">Join a Room</Button>
+      </form>
     </div>
   )
 }
