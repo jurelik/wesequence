@@ -16,7 +16,7 @@ const DownloadButton = () => {
     <>
       {/*iframe hack to avoid opening the download in a new tab*/}
       <iframe name="iframe" style={{ display: 'none' }}></iframe>
-      <Button pos="absolute" top={0} right={0} size="sm" onClick={handleDownloadButton}>Download</Button>
+      <Button ml="10px" size="sm" onClick={handleDownloadButton}>Download</Button>
     </>
   )
 }

@@ -4,13 +4,20 @@ import Track from 'components/Track';
 import Transport from 'components/Transport';
 import SceneArea from 'components/SceneArea';
 import DownloadButton from 'components/DownloadButton';
+import UserArea from 'components/UserArea';
 
 const Sequencer = (props: any) => {
   return (
     <div>
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', marginBottom: 10 }}>
+        <div style={{ flex: 1 }}>
+          {/*Empty div to used for align purposes*/}
+        </div>
         <Transport />
-        <DownloadButton  />
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+          <UserArea />
+          <DownloadButton  />
+        </div>
       </header>
       <main>
         <SceneArea />
