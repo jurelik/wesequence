@@ -1,14 +1,24 @@
+import { connect } from 'react-redux';
+import { SequencerStore } from 'redux/rootReducer';
 import { Icon, Tooltip } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa';
 
-const UserArea = () => {
+const UserArea = (props) => {
   return (
-    <Tooltip label="1 user connected.">
+    <Tooltip label={`${props.users} ${props.users === 1 ? 'user' : 'users'} connected.`}>
       <span>
-        <Icon as={FaUser}/>
+        {
+          Array.from({ length: props.users }, (_, key) => <Icon as={FaUser} ml="2px" key={key} />)
+        }
       </span>
     </Tooltip>
   )
 }
 
-export default UserArea;
+const mapStateToProps = (state: SequencerStore) => {
+  return {
+    users: state.users
+  }
+}
+
+export default connect(mapStateToProps)(UserArea);

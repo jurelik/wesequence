@@ -22,6 +22,7 @@ export type SequencerStore = {
   tempo: number,
   scenes: StoreScenes,
   currentScene: number,
+  users: number,
   err?: string,
   loading: boolean
 }
@@ -35,6 +36,7 @@ const initialState: SequencerStore = {
   tempo: 120,
   scenes: [],
   currentScene: 0,
+  users: 1,
   loading: true
 }
 
@@ -51,9 +53,13 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
       if (action.err) {
         return { ...state, err: action.err, loading: false }
       }
-      return { ...state, tempo: action.tempo, scenes: action.scenes, loading: false, err: undefined };
+      return { ...state, tempo: action.tempo, scenes: action.scenes, users: action.users, loading: false, err: undefined };
     case 'RESET_ERR_LOADING':
       return { ...state, loading: true, err: undefined };
+    case 'USER_JOINED':
+      return { ...state, users: state.users + 1 };
+    case 'USER_LEFT':
+      return { ...state, users: state.users - 1 };
     case 'CHANGE_TEMPO':
       return { ...state, tempo: action.tempo };
     case 'CHANGE_IS_PLAYING':

@@ -16,12 +16,15 @@ const socketHandler = () => {
       case 'INIT':
         //Handle error
         if (data.err) {
-          store.dispatch(handleInitError(data.err));
+        console.log(data.err)
+          store.dispatch(handleInitError(JSON.stringify(data.err)));
           break;
         }
 
         if (data.scenes.length > 0) {
           const deepClone = JSON.parse(JSON.stringify(data.scenes));
+          const users = data.users;
+          delete data['users'];
 
           for (const scene of data.scenes) {
             delete scene['name'];
@@ -49,8 +52,14 @@ const socketHandler = () => {
           }
 
           global.scenes = data.scenes;
-          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone });
+          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone, users });
         }
+        break;
+      case 'USER_JOINED':
+        store.dispatch({ type: 'USER_JOINED' });
+        break;
+      case 'USER_LEFT':
+        store.dispatch({ type: 'USER_LEFT' });
         break;
       case 'SEQ_BUTTON_PRESS':
         store.dispatch(seqButtonPress(data.sceneId, data.trackId, data.position, false));
