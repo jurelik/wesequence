@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Button } from '@chakra-ui/react';
 
@@ -21,4 +22,4 @@ const DownloadButton = () => {
   )
 }
 
-export default DownloadButton;
+export default connect()(DownloadButton);

@@ -25,8 +25,8 @@ export type GlobalTrack = {
 const global: GlobalObject = {
   scenes: [],
   currentNote: 0,
-  lookahead: 25.0,
-  scheduleAheadTime: 0.1,
+  lookahead: 10.0,
+  scheduleAheadTime: 0.2,
   nextNoteTime: 0.0,
   timer: null,
 }

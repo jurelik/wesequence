@@ -14,7 +14,7 @@ const Transport = (props) => {
   }, [props.isPlaying])
 
   const handleAddTrackButton = () => {
-    props.addTrack(props.scenes[props.currentScene].id, true);
+    props.addTrack(props.currentSceneId, true);
   }
 
   const handleTempoChange = (valueStr: string, valueNum: number) => {
@@ -52,8 +52,6 @@ const mapStateToProps = (state: SequencerStore) => {
   return {
     isPlaying: state.isPlaying,
     tempo: state.tempo,
-    scenes: state.scenes,
-    currentScene: state.currentScene
   }
 }
 

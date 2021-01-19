@@ -13,7 +13,7 @@ const Sequencer = (props: any) => {
         <div style={{ flex: 1 }}>
           {/*Empty div to used for align purposes*/}
         </div>
-        <Transport />
+        <Transport currentSceneId={props.currentSceneId}/>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
           <UserArea />
           <DownloadButton  />
@@ -32,7 +32,8 @@ const Sequencer = (props: any) => {
 const mapStateToProps = (state: SequencerStore) => {
   return {
     scenes: state.scenes,
-    currentScene: state.currentScene
+    currentScene: state.currentScene,
+    currentSceneId: state.scenes[state.currentScene].id
   }
 }
 
