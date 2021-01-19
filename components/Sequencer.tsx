@@ -19,10 +19,10 @@ const Sequencer = (props: any) => {
           <DownloadButton  />
         </div>
       </header>
-      <main>
+      <main style={{ width: '98vw', marginLeft: 'auto', marginRight: 'auto' }}>
         <SceneArea />
         {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
-          <Track key={track.id} id={track.id} name={track.name} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
+          <Track key={track.id} id={track.id} name={track.name} url={track.url} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
         )) : null}
       </main>
     </div>

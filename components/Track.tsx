@@ -24,15 +24,19 @@ const Track = (props: any) => {
   return (
     <div style={{ marginBottom: 10, marginLeft: 10 }}>
       <TrackName name={props.name} sceneId={props.sceneId} trackId={props.id} />
-      <Flex alignItems="center">
+      <Flex alignItems="center" justifyContent="flex-start">
+        <div>
         {props.sequence.map((step: number, index: number) => (
           <SequenceButton key={index} id={index} value={step} sceneId={props.sceneId} trackId={props.id}/>
         ))}
+        </div>
         <GainSlider sceneId={props.sceneId} trackId={props.id}/>
-        <LoadSound sceneId={props.sceneId} trackId={props.id}/>
-        <Button size="xs" onClick={handleMuteButton} fontWeight="bold" style={{ backgroundColor: props.mute ? 'red' : null }}>M</Button>
-        <Button size="xs" onClick={handleSoloButton} fontWeight="bold" style={{ backgroundColor: props.solo ? 'yellow' : null }}>S</Button>
-        <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
+        <LoadSound sceneId={props.sceneId} trackId={props.id} url={props.url}/>
+        <div style={{ marginLeft: 'auto' }}>
+          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.mute ? 'red' : null}>M</Button>
+          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.solo ? 'yellow' : null}>S</Button>
+          <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
+        </div>
       </Flex>
     </div>
   )
