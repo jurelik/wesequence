@@ -9,14 +9,13 @@ const SequenceButton = (props: any) => {
   }
 
   return (
-    <Button size="sm" w="2vw" h="2vw" minW={8} minH={8} mx={1} boxShadow="base" colorScheme={props.value === 1 ? 'blue' : props.currentNote === props.id ? 'red' : null} onClick={handleOnClick}></Button>
+    <Button size="sm" w="2vw" h="2vw" minW={8} minH={8} mx={1} boxShadow="base" colorScheme={props.value === 1 ? 'blue' : null}onClick={handleOnClick}></Button>
   )
 }
 
 const mapStateToProps = (state: SequencerStore) => {
   return {
     scenes: state.scenes,
-    currentNote: state.currentNote
   }
 }
 

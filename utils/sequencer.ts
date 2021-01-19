@@ -18,10 +18,8 @@ const sequencer = (command: string) => {
 
     //Advance the beat number, wrap to zero
     global.currentNote++;
-    store.dispatch({type: 'CURRENT_NOTE', val: global.currentNote});
     if (global.currentNote === 16) {
       global.currentNote = 0;
-      store.dispatch({type: 'CURRENT_NOTE', val: 0});
     }
   }
 
@@ -34,7 +32,6 @@ const sequencer = (command: string) => {
     //Stop the scheduler if there are no active tracks
     if (scene.length === 0) {
       global.currentNote = 0;
-      store.dispatch({type: 'CURRENT_NOTE', val: 0});
       clearTimeout(global.timer);
       console.log('No active tracks.');
       return;

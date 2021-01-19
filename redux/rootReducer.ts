@@ -71,11 +71,17 @@ const rootReducer = (state = initialState, action: ReduxAction) => {
     case 'CHANGE_SCENE':
       return { ...state, currentScene: action.index };
     case 'CHANGE_SOUND':
+      newStoreScenes = [ ...state.scenes ];
+
       newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
       newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
       newGlobalTrack.buffer = action.audiobuffer;
 
-      return state;
+      newStoreScene = findStoreScene(newStoreScenes, action.sceneId);
+      newStoreTrack = findStoreTrack(newStoreScene, action.trackId);
+      newStoreTrack.url = 'tempurl';
+
+      return { ...state, scenes: newStoreScenes };
     case 'CHANGE_GAIN':
       newStoreScenes = [ ...state.scenes ];
 
