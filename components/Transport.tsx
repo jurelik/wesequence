@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { SequencerStore } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import { Icon, IconButton, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react';
 import { FaPlay, FaStop, FaPlus } from 'react-icons/fa';
 import { handleSpaceBar, handlePlayButton, handleStopButton } from 'utils/handlePlayStop';
@@ -14,7 +14,7 @@ const Transport = (props) => {
   }, [props.isPlaying])
 
   const handleAddTrackButton = () => {
-    props.addTrack(props.currentSceneId, true);
+    props.addTrack(props.currentScene, true);
   }
 
   const handleTempoChange = (valueStr: string, valueNum: number) => {
@@ -48,10 +48,11 @@ const Transport = (props) => {
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
   return {
-    isPlaying: state.isPlaying,
-    tempo: state.tempo,
+    isPlaying: state.root.isPlaying,
+    tempo: state.root.tempo,
+    currentScene: state.scenes.currentScene
   }
 }
 

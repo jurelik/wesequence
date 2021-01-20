@@ -11,7 +11,7 @@ const sequencer = (command: string) => {
   }
 
   const nextNote = () => {
-    let tempo = store.getState().tempo > 50 ? store.getState().tempo : 50; //Make sure tempo is never lower than 50
+    let tempo = store.getState().root.tempo > 50 ? store.getState().root.tempo : 50; //Make sure tempo is never lower than 50
     const secondsPerBeat = 60.0 / tempo / 4;
 
     global.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
@@ -25,12 +25,14 @@ const sequencer = (command: string) => {
 
   const scheduler = () => {
     const _store = store.getState();
-    const scene = _store.scenes[_store.currentScene];
+    const scene = _store.scenes.byId[_store.scenes.currentScene];
+    const tracks = _store.tracks;
 
     let soloTrack: StoreTrack;
 
+    console.log(_store)
     //Stop the scheduler if there are no active tracks
-    if (scene.length === 0) {
+    if (scene.tracks.length === 0) {
       global.currentNote = 0;
       clearTimeout(global.timer);
       console.log('No active tracks.');
@@ -39,8 +41,8 @@ const sequencer = (command: string) => {
 
     //Check if a track is solo-ed
     scene.tracks.some((track: StoreTrack) => {
-      if (track.solo) {
-        soloTrack = track;
+      if (_store.tracks.byId[track].solo) {
+        soloTrack = _store.tracks.byId[track];
         return true;
       }
     });
@@ -50,15 +52,15 @@ const sequencer = (command: string) => {
       if (soloTrack) {
         if (soloTrack.sequence[global.currentNote] === 1 && !soloTrack.mute) {
           //Find the track in the global object and play the sound from there
-          const globalTrack = global.scenes[_store.currentScene].tracks.find(_track => _track.id === soloTrack.id );
+          const globalTrack = global.scenes[_store.scenes.allIds.indexOf(_store.scenes.currentScene)].tracks.find(_track => _track.id === soloTrack );
           playSound(global.nextNoteTime, globalTrack)
         }
       }
       else {
         for (let track of scene.tracks) {
-          if (track.sequence[global.currentNote] === 1 && !track.mute) {
+          if (tracks.byId[track].sequence[global.currentNote] === 1 && !tracks.byId[track].mute) {
             //Find the track in the global object and play the sound from there
-            const globalTrack = global.scenes[_store.currentScene].tracks.find(_track => _track.id === track.id );
+            const globalTrack = global.scenes[_store.scenes.allIds.indexOf(_store.scenes.currentScene)].tracks.find(_track => _track.id === track );
             playSound(global.nextNoteTime, globalTrack)
           }
         }
@@ -70,7 +72,7 @@ const sequencer = (command: string) => {
 
   if (command === 'start') {
     //Check if there are any active tracks
-    if (store.getState().scenes[store.getState().currentScene].length === 0) {
+    if (store.getState().scenes.allIds.length === 0) {
       console.log('No active tracks.');
       return;
     }

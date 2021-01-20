@@ -67,7 +67,8 @@ export const changeSoundSend = (sceneId: number, trackId: number, file: File) =>
         type: 'CHANGE_SOUND',
         sceneId,
         trackId,
-        audiobuffer
+        audiobuffer,
+        url: 'temp'
       });
     }
     catch (err) {

@@ -3,16 +3,16 @@ import sequencer from 'utils/sequencer';
 import { changeIsPlaying } from 'redux/actions';
 
 export const handleSpaceBar = (e) => {
-  if (e.key === ' ' && !store.getState().isPlaying) {
+  if (e.key === ' ' && !store.getState().root.isPlaying) {
     handlePlayButton();
   }
-  else if (e.key === ' ' && store.getState().isPlaying) {
+  else if (e.key === ' ' && store.getState().root.isPlaying) {
     handleStopButton();
   }
 }
 
 export const handlePlayButton = () => {
-  if (!store.getState().isPlaying) {
+  if (!store.getState().root.isPlaying) {
     sequencer('start');
   }
 
@@ -20,7 +20,7 @@ export const handlePlayButton = () => {
 }
 
 export const handleStopButton = () => {
-  if (store.getState().isPlaying) {
+  if (store.getState().root.isPlaying) {
     sequencer('stop');
   }
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SequencerStore, StoreTrack } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import Track from 'components/Track';
 import Transport from 'components/Transport';
 import SceneArea from 'components/SceneArea';
@@ -13,7 +13,7 @@ const Sequencer = (props: any) => {
         <div style={{ flex: 1 }}>
           {/*Empty div to used for align purposes*/}
         </div>
-        <Transport currentSceneId={props.currentSceneId}/>
+        <Transport />
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
           <UserArea />
           <DownloadButton  />
@@ -21,19 +21,23 @@ const Sequencer = (props: any) => {
       </header>
       <main style={{ width: '98vw', marginLeft: 'auto', marginRight: 'auto' }}>
         <SceneArea />
-        {props.scenes.length > 0 ? props.scenes[props.currentScene].tracks.map((track: StoreTrack) => (
-          <Track key={track.id} id={track.id} name={track.name} url={track.url} sceneId={props.scenes[props.currentScene].id} sequence={track.sequence} mute={track.mute} solo={track.solo}/>
-        )) : null}
+        {Object.keys(props.tracks).map((track: any) => {
+          if (props.tracks[track].sceneId.toString() === props.currentScene) {
+            return (
+              <Track key={track} trackId={track}/>
+            )
+          }
+        })}
       </main>
     </div>
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
   return {
     scenes: state.scenes,
-    currentScene: state.currentScene,
-    currentSceneId: state.scenes[state.currentScene].id
+    currentScene: state.scenes.currentScene,
+    tracks: state.tracks.byId
   }
 }
 

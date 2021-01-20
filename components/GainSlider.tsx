@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
-import { SequencerStore } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import { changeGain } from 'redux/actions';
 
 const GainSlider = (props: any) => {
@@ -18,18 +18,9 @@ const GainSlider = (props: any) => {
   )
 }
 
-const mapStateToProps = (state: SequencerStore, ownProps: any) => {
-  let gain: number;
-
-  state.scenes[state.currentScene].tracks.some(track => {
-    if (track.id === ownProps.trackId) {
-      gain = track.gain;
-      return true;
-    }
-  })
-
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
   return {
-    gain
+    gain: state.tracks.byId[ownProps.trackId].gain
   }
 }
 

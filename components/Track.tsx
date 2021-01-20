@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SequencerStore } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import { Flex, Button, Icon, IconButton } from '@chakra-ui/react';
 import { FaTimes } from 'react-icons/fa';
 import SequenceButton from 'components/SequenceButton';
@@ -10,31 +10,32 @@ import { deleteTrack, muteTrack, soloTrack } from 'redux/actions';
 
 const Track = (props: any) => {
   const handleMuteButton = () => {
-    props.muteTrack(props.id);
+    props.muteTrack(props.trackId);
   }
 
   const handleSoloButton = () => {
-    props.soloTrack(props.id);
+    props.soloTrack(props.trackId);
   }
 
   const handleDeleteButton = () => {
-    props.deleteTrack(props.sceneId, props.id, true);
+    props.deleteTrack(props.track.sceneId, props.trackId, true);
   }
 
+  console.log(props.track)
   return (
     <div style={{ marginBottom: 10, marginLeft: 10 }}>
       <TrackName name={props.name} sceneId={props.sceneId} trackId={props.id} />
       <Flex alignItems="center" justifyContent="flex-start">
         <div>
-        {props.sequence.map((step: number, index: number) => (
-          <SequenceButton key={index} id={index} value={step} sceneId={props.sceneId} trackId={props.id}/>
+        {props.track.sequence.map((step: number, index: number) => (
+          <SequenceButton key={index} id={index} value={step} sceneId={props.track.sceneId} trackId={props.trackId}/>
         ))}
         </div>
-        <GainSlider sceneId={props.sceneId} trackId={props.id}/>
-        <LoadSound sceneId={props.sceneId} trackId={props.id} url={props.url}/>
+        <GainSlider sceneId={props.track.sceneId} trackId={props.trackId}/>
+        <LoadSound sceneId={props.track.sceneId} trackId={props.trackId} url={props.track.url}/>
         <div style={{ marginLeft: 'auto' }}>
-          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.mute ? 'red' : null}>M</Button>
-          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.solo ? 'yellow' : null}>S</Button>
+          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.track.mute ? 'red' : null}>M</Button>
+          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.track.solo ? 'yellow' : null}>S</Button>
           <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
         </div>
       </Flex>
@@ -48,9 +49,9 @@ const mapDispatchToProps = {
   soloTrack
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
   return {
-    scenes: state.scenes
+    track: state.tracks.byId[ownProps.trackId]
   }
 }
 

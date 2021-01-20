@@ -16,43 +16,67 @@ const socketHandler = () => {
       case 'INIT':
         //Handle error
         if (data.err) {
-        console.log(data.err)
+          console.log(data.err)
           store.dispatch(handleInitError(JSON.stringify(data.err)));
           break;
         }
 
         if (data.scenes.length > 0) {
-          const deepClone = JSON.parse(JSON.stringify(data.scenes));
+          const scenesClone = JSON.parse(JSON.stringify(data.scenes));
+          const tracksClone = JSON.parse(JSON.stringify(data.tracks));
           const users = data.users;
           delete data['users'];
 
+          //Set up scenes
           for (const scene of data.scenes) {
             delete scene['name'];
+            scene.tracks = [];
+          }
 
-            //Load buffer into the global object
-            for (const track of scene.tracks) {
-              const gainValue = track.gain; //Store the 0-127 value before reassigning it
+          //Add tracks to scenes
+          for (const track of data.tracks) {
+            const gainValue = track.gain; //Store the 0-127 value before reassigning it
 
-              if (track.url) {
-                const sample = await fetch(track.url);
-                const arraybuffer = await sample.arrayBuffer();
-                const audiobuffer = await global.context.decodeAudioData(arraybuffer);
-                track.buffer = audiobuffer;
-              }
-
-              //Create a gain node
-              track.gain = global.context.createGain();
-              track.gain.connect(global.context.destination);
-              track.gain.gain.value = 1 / 127 * gainValue;
-
-              //Prevent storing the same information twice
-              delete track['url'];
-              delete track['sequence'];
+            if (track.url) {
+              const sample = await fetch(track.url);
+              const arraybuffer = await sample.arrayBuffer();
+              const audiobuffer = await global.context.decodeAudioData(arraybuffer);
+              track.buffer = audiobuffer;
             }
+
+            //Create a gain node
+            track.gain = global.context.createGain();
+            track.gain.connect(global.context.destination);
+            track.gain.gain.value = 1 / 127 * gainValue;
+
+            //Prevent storing the same information twice
+            delete track['url'];
+            delete track['sequence'];
+
+            //Add to appropriate scene
+            data.scenes.some(scene => {
+              if (scene.id === track.sceneId) {
+                scene.tracks.push(track);
+                return true;
+              }
+            });
+
+            //Add track id's to scenesClone
+            scenesClone.some(scene => {
+              if (scene.tracks && scene.id === track.sceneId) {
+                scene.tracks.push(track.id);
+                return true;
+              }
+              else if (!scene.tracks && scene.id === track.sceneId) {
+                scene.tracks = [];
+                scene.tracks.push(track.id);
+                return true;
+              }
+            });
           }
 
           global.scenes = data.scenes;
-          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: deepClone, users });
+          store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: scenesClone, tracks: tracksClone, users });
         }
         break;
       case 'USER_JOINED':
