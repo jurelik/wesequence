@@ -35,6 +35,10 @@ const socketHandler = () => {
             scene.tracks = [];
           }
 
+          for (const scene of scenesClone) {
+            scene.tracks = [];
+          }
+
           //Set up tracks
           for (const track of data.tracks) {
             const id = track.id;
@@ -59,13 +63,8 @@ const socketHandler = () => {
 
             //Add track id's to scenesClone
             scenesClone.some(scene => {
-              if (scene.tracks && scene.id === track.sceneId) {
-                scene.tracks.push(id);
-                return true;
-              }
-              else if (!scene.tracks && scene.id === track.sceneId) {
-                scene.tracks = [];
-                scene.tracks.push(id);
+              if (scene.id === track.sceneId) {
+                scene.tracks.push(id.toString());
                 return true;
               }
             });
@@ -101,7 +100,7 @@ const socketHandler = () => {
         store.dispatch(addTrack(data.sceneId, false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
-        store.dispatch(deleteTrack(data.trackId, false))
+        store.dispatch(deleteTrack(data.sceneId, data.trackId, false))
         break;
       case 'CHANGE_TRACK_NAME':
         store.dispatch(changeTrackName(data.trackId, data.name, false));

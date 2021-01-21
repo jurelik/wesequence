@@ -146,17 +146,19 @@ export const addTrack = (sceneId: number, send: boolean, trackId?: number, track
   }
 }
 
-export const deleteTrack = (trackId: number, send: boolean) => {
+export const deleteTrack = (sceneId: string, trackId: number, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'DELETE_TRACK',
+      sceneId,
       trackId
     }));
   }
 
   return {
     type: 'DELETE_TRACK',
+    sceneId,
     trackId
   }
 }

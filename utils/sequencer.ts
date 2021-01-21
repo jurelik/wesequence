@@ -1,6 +1,7 @@
 import global, { GlobalTrack } from 'utils/global';
 import { StoreTrack } from 'redux/trackReducer';
 import store from 'redux/store';
+import { changeIsPlaying } from 'redux/actions';
 
 const sequencer = (command: string) => {
   const playSound = (time: number, track: GlobalTrack) => {
@@ -35,6 +36,7 @@ const sequencer = (command: string) => {
     if (scene.tracks.length === 0) {
       global.currentNote = 0;
       clearTimeout(global.timer);
+      store.dispatch(changeIsPlaying(false));
       console.log('No active tracks.');
       return;
     }
@@ -73,7 +75,8 @@ const sequencer = (command: string) => {
 
   if (command === 'start') {
     //Check if there are any active tracks
-    if (store.getState().scenes.allIds.length === 0) {
+    if (store.getState().scenes.byId[store.getState().scenes.currentScene].tracks.length === 0) {
+      store.dispatch(changeIsPlaying(false));
       console.log('No active tracks.');
       return;
     }
@@ -83,10 +86,12 @@ const sequencer = (command: string) => {
       global.context.resume();
     }
 
+    store.dispatch(changeIsPlaying(true));
     global.nextNoteTime = global.context.currentTime + 0.05;
     scheduler(); // kick off scheduling
   }
   else {
+    store.dispatch(changeIsPlaying(false));
     global.currentNote = 0;
     clearTimeout(global.timer);
   }

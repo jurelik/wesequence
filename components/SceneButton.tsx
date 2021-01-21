@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Flex, Input, Icon, IconButton, Button, ButtonGroup } from '@chakra-ui/react';
+import { Icon, IconButton, Button, ButtonGroup } from '@chakra-ui/react';
 import { FaTimes } from 'react-icons/fa';
 import { CombinedState } from 'redux/store';
 import { changeScene, deleteScene, changeSceneName } from 'redux/actions';
@@ -29,11 +29,12 @@ const SceneButton = (props) => {
   )
 }
 
-const mapStateToProps = (state: CombinedState) => {
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
   const moreThanOneScene = state.scenes.allIds.length > 1 ? true : false;
 
   return {
     currentScene: state.scenes.currentScene,
+    name: state.scenes.byId[ownProps.sceneId].name,
     moreThanOneScene
   }
 }

@@ -44,8 +44,8 @@ const Room = (props) => {
 
 const mapStateToProps = (state: SequencerStore) => {
   return {
-    loading: state.loading,
-    err: state.err
+    loading: state.root.loading,
+    err: state.root.err
   }
 }
 

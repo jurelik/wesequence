@@ -18,7 +18,7 @@ const Track = (props: any) => {
   }
 
   const handleDeleteButton = () => {
-    props.deleteTrack(props.trackId, true);
+    props.deleteTrack(props.sceneId, props.trackId, true);
   }
 
   return (
@@ -50,6 +50,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: CombinedState, ownProps: any) => {
   return {
+    sceneId: state.tracks.byId[ownProps.trackId].sceneId,
     sequence: state.tracks.byId[ownProps.trackId].sequence,
     mute: state.tracks.byId[ownProps.trackId].mute,
     solo: state.tracks.byId[ownProps.trackId].solo

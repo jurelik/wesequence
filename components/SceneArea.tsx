@@ -12,8 +12,8 @@ const SceneArea = (props) => {
 
   return (
     <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10 }}>
-      {props.oneOrMoreScenes ? Object.keys(props.scenes).map((scene: string, index: number) => (
-        <SceneButton key={index} index={index} name={props.scenes[scene].name} sceneId={scene} />
+      {props.oneOrMoreScenes ? props.allIds.map((scene: string, index: number) => (
+        <SceneButton key={index} index={index} sceneId={scene} />
       )) : null}
       <IconButton aria-label="Add Scene" size="sm" onClick={handleAddSceneButton} icon={<Icon as={FaPlus} />} />
     </div>
@@ -24,7 +24,7 @@ const mapStateToProps = (state: CombinedState) => {
   const oneOrMoreScenes = state.scenes.allIds.length > 0 ? true : false;
 
   return {
-    scenes: state.scenes.byId,
+    allIds: state.scenes.allIds,
     oneOrMoreScenes
   }
 }

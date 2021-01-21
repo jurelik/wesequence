@@ -1,6 +1,7 @@
 export type StoreScene = {
   id: number,
-  name?: string
+  name?: string,
+  tracks: string[]
 };
 
 export type SceneStore = {
@@ -35,6 +36,18 @@ const sceneReducer = (state = initialState, action: ReduxAction) => {
       return newState;
     case 'CHANGE_SCENE':
       return { ...state, currentScene: action.sceneId };
+    case 'ADD_TRACK':
+      newState = { ...state };
+
+      newState.byId[action.sceneId].tracks = [ ...newState.byId[action.sceneId].tracks, action.trackId.toString() ];
+
+      return newState;
+    case 'DELETE_TRACK':
+      newState = { ...state };
+
+      newState.byId[action.sceneId].tracks = newState.byId[action.sceneId].tracks.filter(track => track !== action.trackId);
+
+      return newState;
     case 'ADD_SCENE':
       newState = { ...state };
 
