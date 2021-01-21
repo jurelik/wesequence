@@ -18,24 +18,23 @@ const Track = (props: any) => {
   }
 
   const handleDeleteButton = () => {
-    props.deleteTrack(props.track.sceneId, props.trackId, true);
+    props.deleteTrack(props.trackId, true);
   }
 
-  console.log(props.track)
   return (
     <div style={{ marginBottom: 10, marginLeft: 10 }}>
-      <TrackName name={props.name} sceneId={props.sceneId} trackId={props.id} />
+      <TrackName trackId={props.trackId} />
       <Flex alignItems="center" justifyContent="flex-start">
         <div>
-        {props.track.sequence.map((step: number, index: number) => (
-          <SequenceButton key={index} id={index} value={step} sceneId={props.track.sceneId} trackId={props.trackId}/>
+        {props.sequence.map((step: number, index: number) => (
+          <SequenceButton key={index} index={index} trackId={props.trackId}/>
         ))}
         </div>
-        <GainSlider sceneId={props.track.sceneId} trackId={props.trackId}/>
-        <LoadSound sceneId={props.track.sceneId} trackId={props.trackId} url={props.track.url}/>
+        <GainSlider trackId={props.trackId}/>
+        <LoadSound trackId={props.trackId} />
         <div style={{ marginLeft: 'auto' }}>
-          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.track.mute ? 'red' : null}>M</Button>
-          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.track.solo ? 'yellow' : null}>S</Button>
+          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.mute ? 'red' : null}>M</Button>
+          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.solo ? 'yellow' : null}>S</Button>
           <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
         </div>
       </Flex>
@@ -51,7 +50,9 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: CombinedState, ownProps: any) => {
   return {
-    track: state.tracks.byId[ownProps.trackId]
+    sequence: state.tracks.byId[ownProps.trackId].sequence,
+    mute: state.tracks.byId[ownProps.trackId].mute,
+    solo: state.tracks.byId[ownProps.trackId].solo
   }
 }
 

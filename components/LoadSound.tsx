@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { CombinedState } from 'redux/store';
 import { useRef } from 'react';
 import { Button } from '@chakra-ui/react';
 import { changeSoundSend } from 'redux/actions';
@@ -11,7 +12,7 @@ const LoadSound = (props: any) => {
       console.log('File size must be below 2MB.');
       return;
     }
-    props.changeSoundSend(props.sceneId, props.trackId, e.target.files[0]);
+    props.changeSoundSend(props.trackId, e.target.files[0]);
   }
 
   const handleUploadClick = () => {
@@ -26,8 +27,14 @@ const LoadSound = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
+  return {
+    url: state.tracks.byId[ownProps.trackId].url
+  }
+}
+
 const mapDispatchToProps = {
   changeSoundSend
 }
 
-export default connect(null, mapDispatchToProps)(LoadSound);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadSound);

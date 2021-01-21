@@ -5,7 +5,7 @@ import { changeGain } from 'redux/actions';
 
 const GainSlider = (props: any) => {
   const handleGainChange = (value: number) => {
-    props.changeGain(props.sceneId, props.trackId, value, true);
+    props.changeGain(props.trackId, value, true);
   }
 
   return (

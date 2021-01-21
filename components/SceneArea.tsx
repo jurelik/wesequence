@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SequencerStore, StoreScene } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import { Icon, IconButton } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
 import SceneButton from 'components/SceneButton';
@@ -12,17 +12,20 @@ const SceneArea = (props) => {
 
   return (
     <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10 }}>
-      {props.scenes.length > 0 ? props.scenes.map((scene: StoreScene, index: number) => (
-        <SceneButton key={index} index={index} name={scene.name} sceneId={scene.id} />
+      {props.oneOrMoreScenes ? Object.keys(props.scenes).map((scene: string, index: number) => (
+        <SceneButton key={index} index={index} name={props.scenes[scene].name} sceneId={scene} />
       )) : null}
-      <IconButton aria-label="Delete Track" size="sm" onClick={handleAddSceneButton} icon={<Icon as={FaPlus} />} />
+      <IconButton aria-label="Add Scene" size="sm" onClick={handleAddSceneButton} icon={<Icon as={FaPlus} />} />
     </div>
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
+  const oneOrMoreScenes = state.scenes.allIds.length > 0 ? true : false;
+
   return {
-    scenes: state.scenes,
+    scenes: state.scenes.byId,
+    oneOrMoreScenes
   }
 }
 

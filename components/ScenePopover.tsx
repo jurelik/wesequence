@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { useRef } from 'react';
 import { Flex, Input, Icon, IconButton, Popover, PopoverBody, PopoverTrigger, PopoverContent, PopoverArrow } from '@chakra-ui/react';
 import { FaEdit, FaCheck } from 'react-icons/fa';
-import { SequencerStore } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store';
 import { removeListener, addListener } from 'utils/handlePlayStop';
 import { changeSceneName } from 'redux/actions';
 
@@ -31,7 +31,7 @@ const ScenePopover = (props) => {
       {({ onClose }) => (
         <>
           <PopoverTrigger>
-            <IconButton aria-label="Change Name" colorScheme={props.index === props.currentScene ? "blue" : null} icon={<Icon as={FaEdit} />} />
+            <IconButton aria-label="Change Name" colorScheme={props.sceneId === props.currentScene ? "blue" : null} icon={<Icon as={FaEdit} />} />
           </PopoverTrigger>
           <PopoverContent ml="10px">
             <PopoverArrow />
@@ -51,9 +51,9 @@ const ScenePopover = (props) => {
 
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
   return {
-    currentScene: state.currentScene
+    currentScene: state.scenes.currentScene
   }
 }
 

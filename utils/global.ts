@@ -1,7 +1,8 @@
 type GlobalObject = {
   context?: AudioContext,
   socket?: WebSocket,
-  scenes: GlobalScenes,
+  //scenes: GlobalScenes,
+  tracks: GlobalTracks,
   currentNote: number,
   lookahead: number,
   scheduleAheadTime: number,
@@ -9,21 +10,21 @@ type GlobalObject = {
   timer?: ReturnType<typeof setTimeout>
 }
 
-export type GlobalScenes = GlobalScene[];
+export type GlobalScenes = { [key: string]: GlobalScene };
 export type GlobalScene = {
-  id: number,
-  tracks: GlobalTrack[]
+  tracks: string
 }
+
+export type GlobalTracks = { [key: string]: GlobalTrack }
 export type GlobalTrack = {
-  id: number,
-  name: string,
   buffer?: AudioBuffer,
   source?: AudioBufferSourceNode,
   gain: GainNode
 }
 
 const global: GlobalObject = {
-  scenes: [],
+  //scenes: {},
+  tracks: {},
   currentNote: 0,
   lookahead: 10.0,
   scheduleAheadTime: 0.2,

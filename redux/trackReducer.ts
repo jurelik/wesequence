@@ -1,6 +1,4 @@
-import global, { GlobalTrack, GlobalScene } from 'utils/global';
-import { findGlobalTrack, findStoreTrack } from 'utils/findTrack';
-import { findGlobalScene, findStoreScene } from 'utils/findScene';
+import global, { GlobalTrack } from 'utils/global';
 
 export type StoreTrack = {
   sceneId: number,
@@ -8,8 +6,8 @@ export type StoreTrack = {
   url?: string,
   sequence: number[],
   gain: number,
-  mute?: boolean,
-  solo?: boolean
+  mute: boolean,
+  solo: boolean
 }
 export type TrackStore = {
   byId: {[name: string]: StoreTrack},
@@ -27,64 +25,66 @@ const initialState: TrackStore = {
 }
 
 const trackReducer = (state = initialState, action: ReduxAction) => {
-  let newGlobalTrack;
-  let newGlobalScene;
-  let newState;
+  let newGlobalTrack: GlobalTrack;
+  let newState: TrackStore;
 
   switch (action.type) {
     case 'INIT':
       newState = { ...state };
-      action.tracks.forEach(track => {
-        newState.byId[track.id] = track;
-        delete newState.byId[track.id].id;
+      action.tracks.forEach((track: any) => {
+        const id = track.id;
+
+        //Set correct structure
+        track.mute = false;
+        track.solo = false;
+        track.id = undefined;
+
+        newState.byId[id] = track;
       });
       return newState;
     case 'ADD_TRACK':
       newState = { ...state };
-      
+
+      newState.byId = { ...newState.byId };
       newState.byId[action.trackId.toString()] = {
         sceneId: action.sceneId,
         name: action.trackName,
         sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        gain: 100
+        gain: 100,
+        mute: false,
+        solo: false
       }
-      newState.allIds.push(action.trackId.toString());
+      newState.allIds = [ ...newState.allIds, action.trackId.toString() ];
 
       newGlobalTrack = {
-        id: action.trackId,
-        name: action.trackName,
         gain: global.context.createGain()
       }
       newGlobalTrack.gain.connect(global.context.destination);
       newGlobalTrack.gain.gain.value = 1 / 127 * 100;
 
-      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
-      newGlobalScene.tracks.push(newGlobalTrack);
+      global.tracks[action.trackId] = newGlobalTrack;
 
       return newState;
     case 'DELETE_TRACK':
       newState = { ...state };
 
-      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
-      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
-      newGlobalScene.tracks.splice(newGlobalScene.tracks.indexOf(newGlobalTrack), 1);
+      delete global.tracks[action.trackId];
 
-      delete newState[action.trackId.toString()];
-      newState.allIds.splice(newState.allIds.indexOf(action.trackId.toString()), 1);
+      newState.byId = { ...newState.byId }
+      delete newState.byId[action.trackId.toString()];
+      newState.allIds = newState.allIds.filter((track: string) => track !== action.trackId);
 
       return newState;
     case 'CHANGE_TRACK_NAME':
       newState = { ...state };
 
-      newState[action.trackId].name = action.name;
+      newState.byId[action.trackId].name = action.name;
 
       return newState;
     case 'CHANGE_SOUND':
       newState = { ...state };
 
-      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
-      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
-      newGlobalTrack.buffer = action.audiobuffer;
+      global.tracks[action.trackId].buffer = action.audiobuffer;
 
       newState.byId[action.trackId.toString()].url = action.url;
 
@@ -92,18 +92,16 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
     case 'CHANGE_GAIN':
       newState = { ...state };
 
-      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
-      newGlobalTrack = findGlobalTrack(newGlobalScene, action.trackId);
-      newGlobalTrack.gain.gain.value = 1 / 127 * action.gain;
+      global.tracks[action.trackId].gain.gain.value = 1 / 127 * action.gain;
 
       newState.byId[action.trackId.toString()].gain = action.gain;
 
       return newState;
     case 'SEQ_BUTTON_PRESS':
       newState = { ...state };
-      let track = newState.byId[action.trackId.toString()];
 
-      track.sequence[action.position] = track.sequence[action.position] === 0 ? 1 : 0;
+      let sequence = newState.byId[action.trackId].sequence;
+      sequence[action.position] = sequence[action.position] === 0 ? 1 : 0;
 
       return newState;
     case 'MUTE_TRACK':
@@ -116,10 +114,10 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
       newState = { ...state };
 
       for (let track in newState.byId) {
-        if (newState.byId[track].sceneId !== newState.currentScene) {
+        if (newState.byId[track].sceneId.toString() !== action.currentScene) {
           continue;
         }
-        if (track === action.trackId.toString()) {
+        if (track === action.trackId) {
           newState.byId[track].solo = !newState.byId[track].solo;
         }
         else {

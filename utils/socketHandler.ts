@@ -24,6 +24,8 @@ const socketHandler = () => {
         if (data.scenes.length > 0) {
           const scenesClone = JSON.parse(JSON.stringify(data.scenes));
           const tracksClone = JSON.parse(JSON.stringify(data.tracks));
+          let globalTracks = {};
+
           const users = data.users;
           delete data['users'];
 
@@ -33,8 +35,9 @@ const socketHandler = () => {
             scene.tracks = [];
           }
 
-          //Add tracks to scenes
+          //Set up tracks
           for (const track of data.tracks) {
+            const id = track.id;
             const gainValue = track.gain; //Store the 0-127 value before reassigning it
 
             if (track.url) {
@@ -52,30 +55,25 @@ const socketHandler = () => {
             //Prevent storing the same information twice
             delete track['url'];
             delete track['sequence'];
-
-            //Add to appropriate scene
-            data.scenes.some(scene => {
-              if (scene.id === track.sceneId) {
-                scene.tracks.push(track);
-                return true;
-              }
-            });
+            delete track['id'];
 
             //Add track id's to scenesClone
             scenesClone.some(scene => {
               if (scene.tracks && scene.id === track.sceneId) {
-                scene.tracks.push(track.id);
+                scene.tracks.push(id);
                 return true;
               }
               else if (!scene.tracks && scene.id === track.sceneId) {
                 scene.tracks = [];
-                scene.tracks.push(track.id);
+                scene.tracks.push(id);
                 return true;
               }
             });
+
+            globalTracks[id] = track;
           }
 
-          global.scenes = data.scenes;
+          global.tracks = globalTracks;
           store.dispatch({ type: 'INIT', tempo: data.tempo, scenes: scenesClone, tracks: tracksClone, users });
         }
         break;
@@ -86,27 +84,27 @@ const socketHandler = () => {
         store.dispatch({ type: 'USER_LEFT' });
         break;
       case 'SEQ_BUTTON_PRESS':
-        store.dispatch(seqButtonPress(data.sceneId, data.trackId, data.position, false));
+        store.dispatch(seqButtonPress(data.trackId, data.position, false));
         break;
       case 'CHANGE_SOUND':
         //Create buffer
         const arraybuffer = stringToArraybuffer(data.arraybuffer);
-        store.dispatch(changeSoundReceive(data.sceneId, data.trackId, arraybuffer));
+        store.dispatch(changeSoundReceive(data.trackId, arraybuffer));
         break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));
         break;
       case 'CHANGE_GAIN':
-        store.dispatch(changeGain(data.sceneId, data.trackId, data.gain));
+        store.dispatch(changeGain(data.trackId, data.gain));
         break;
       case 'ADD_TRACK':
         store.dispatch(addTrack(data.sceneId, false, data.trackId, data.trackName))
         break;
       case 'DELETE_TRACK':
-        store.dispatch(deleteTrack(data.sceneId, data.trackId, false))
+        store.dispatch(deleteTrack(data.trackId, false))
         break;
       case 'CHANGE_TRACK_NAME':
-        store.dispatch(changeTrackName(data.sceneId, data.trackId, data.name, false));
+        store.dispatch(changeTrackName(data.trackId, data.name, false));
         break;
       case 'ADD_SCENE':
         store.dispatch(addScene(false, data.sceneId));

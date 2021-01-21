@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
+import { CombinedState } from 'redux/store';
 import { Button } from '@chakra-ui/react';
-import { SequencerStore } from 'redux/rootReducer';
 import { seqButtonPress } from 'redux/actions';
 
 const SequenceButton = (props: any) => {
   const handleOnClick = () => {
-    props.seqButtonPress(props.sceneId, props.trackId, props.id, true);
+    props.seqButtonPress(props.trackId, props.index, true);
   }
 
   return (
@@ -13,9 +13,9 @@ const SequenceButton = (props: any) => {
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
   return {
-    scenes: state.scenes,
+    value: state.tracks.byId[ownProps.trackId].sequence[ownProps.index]
   }
 }
 

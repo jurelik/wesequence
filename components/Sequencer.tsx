@@ -35,7 +35,6 @@ const Sequencer = (props: any) => {
 
 const mapStateToProps = (state: CombinedState) => {
   return {
-    scenes: state.scenes,
     currentScene: state.scenes.currentScene,
     tracks: state.tracks.byId
   }

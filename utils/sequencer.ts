@@ -1,5 +1,5 @@
 import global, { GlobalTrack } from 'utils/global';
-import { StoreTrack } from 'redux/rootReducer';
+import { StoreTrack } from 'redux/trackReducer';
 import store from 'redux/store';
 
 const sequencer = (command: string) => {
@@ -29,8 +29,8 @@ const sequencer = (command: string) => {
     const tracks = _store.tracks;
 
     let soloTrack: StoreTrack;
+    let soloTrackId: string;
 
-    console.log(_store)
     //Stop the scheduler if there are no active tracks
     if (scene.tracks.length === 0) {
       global.currentNote = 0;
@@ -40,9 +40,10 @@ const sequencer = (command: string) => {
     }
 
     //Check if a track is solo-ed
-    scene.tracks.some((track: StoreTrack) => {
+    scene.tracks.some((track: string) => {
       if (_store.tracks.byId[track].solo) {
         soloTrack = _store.tracks.byId[track];
+        soloTrackId = track;
         return true;
       }
     });
@@ -52,7 +53,7 @@ const sequencer = (command: string) => {
       if (soloTrack) {
         if (soloTrack.sequence[global.currentNote] === 1 && !soloTrack.mute) {
           //Find the track in the global object and play the sound from there
-          const globalTrack = global.scenes[_store.scenes.allIds.indexOf(_store.scenes.currentScene)].tracks.find(_track => _track.id === soloTrack );
+          const globalTrack = global.tracks[soloTrackId];
           playSound(global.nextNoteTime, globalTrack)
         }
       }
@@ -60,7 +61,7 @@ const sequencer = (command: string) => {
         for (let track of scene.tracks) {
           if (tracks.byId[track].sequence[global.currentNote] === 1 && !tracks.byId[track].mute) {
             //Find the track in the global object and play the sound from there
-            const globalTrack = global.scenes[_store.scenes.allIds.indexOf(_store.scenes.currentScene)].tracks.find(_track => _track.id === track );
+            const globalTrack = global.tracks[track];
             playSound(global.nextNoteTime, globalTrack)
           }
         }

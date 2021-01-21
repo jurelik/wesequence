@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { CombinedState } from 'redux/store';
 import { Flex, Icon, IconButton, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
 import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import { removeListener, addListener } from 'utils/handlePlayStop';
@@ -18,7 +19,7 @@ const TrackName = (props: any) => {
 
   const handleSubmit = (value: string) => {
     addListener();
-    props.changeTrackName(props.sceneId, props.trackId, value, true);
+    props.changeTrackName(props.trackId, value, true);
   }
 
   const handleClose = () => {
@@ -47,8 +48,14 @@ const TrackName = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: CombinedState, ownProps: any) => {
+  return {
+    name: state.tracks.byId[ownProps.trackId].name
+  }
+}
+
 const mapDispatchToProps = {
   changeTrackName
 }
 
-export default connect(null, mapDispatchToProps)(TrackName);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackName);

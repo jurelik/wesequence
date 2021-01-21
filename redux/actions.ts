@@ -28,14 +28,14 @@ export const changeIsPlaying = (value: boolean) => ({
   value
 });
 
-export const changeScene = (index: number) => {
+export const changeScene = (sceneId: string) => {
   return {
     type: 'CHANGE_SCENE',
-    index
+    sceneId
   }
 }
 
-export const changeSoundSend = (sceneId: number, trackId: number, file: File) => {
+export const changeSoundSend = (trackId: number, file: File) => {
   return async (dispatch) => {
     try {
       //Get file type
@@ -57,7 +57,6 @@ export const changeSoundSend = (sceneId: number, trackId: number, file: File) =>
 
       global.socket.send(JSON.stringify({
         type:'CHANGE_SOUND',
-        sceneId,
         trackId,
         fileType,
         arraybuffer: arraybufferString
@@ -65,7 +64,6 @@ export const changeSoundSend = (sceneId: number, trackId: number, file: File) =>
 
       dispatch({
         type: 'CHANGE_SOUND',
-        sceneId,
         trackId,
         audiobuffer,
         url: 'temp'
@@ -77,14 +75,13 @@ export const changeSoundSend = (sceneId: number, trackId: number, file: File) =>
   }
 }
 
-export const changeSoundReceive = (sceneId: number, trackId: number, arraybuffer: ArrayBuffer) => {
+export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) => {
   return async (dispatch) => {
     try {
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
 
       dispatch({
         type: 'CHANGE_SOUND',
-        sceneId,
         trackId,
         audiobuffer
       });
@@ -95,12 +92,11 @@ export const changeSoundReceive = (sceneId: number, trackId: number, arraybuffer
   }
 }
 
-export const changeGain = (sceneId: number, trackId: number, gain: number, send?: boolean) => {
+export const changeGain = (trackId: number, gain: number, send?: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'CHANGE_GAIN',
-      sceneId,
       trackId,
       gain
     }));
@@ -108,19 +104,17 @@ export const changeGain = (sceneId: number, trackId: number, gain: number, send?
 
   return {
     type: 'CHANGE_GAIN',
-    sceneId,
     trackId,
     gain
   }
 
 }
 
-export const seqButtonPress = (sceneId: number, trackId: number, position: number, send: boolean) => {
+export const seqButtonPress = (trackId: number, position: number, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'SEQ_BUTTON_PRESS',
-      sceneId,
       trackId,
       position
     }));
@@ -128,7 +122,6 @@ export const seqButtonPress = (sceneId: number, trackId: number, position: numbe
 
   return {
     type: 'SEQ_BUTTON_PRESS',
-    sceneId,
     trackId,
     position
   }
@@ -153,29 +146,26 @@ export const addTrack = (sceneId: number, send: boolean, trackId?: number, track
   }
 }
 
-export const deleteTrack = (sceneId: number,trackId: number, send: boolean) => {
+export const deleteTrack = (trackId: number, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'DELETE_TRACK',
-      sceneId,
       trackId
     }));
   }
 
   return {
     type: 'DELETE_TRACK',
-    sceneId,
     trackId
   }
 }
 
-export const changeTrackName = (sceneId: number, trackId: number, name: string, send: boolean) => {
+export const changeTrackName = (trackId: number, name: string, send: boolean) => {
   // Send action via ws
   if (send) {
     global.socket.send(JSON.stringify({
       type: 'CHANGE_TRACK_NAME',
-      sceneId,
       trackId,
       name
     }));
@@ -183,7 +173,6 @@ export const changeTrackName = (sceneId: number, trackId: number, name: string, 
 
   return {
     type: 'CHANGE_TRACK_NAME',
-    sceneId,
     trackId,
     name
   }
@@ -245,8 +234,12 @@ export const muteTrack = (trackId: number) => {
 }
 
 export const soloTrack = (trackId: number) => {
-  return {
-    type: 'SOLO_TRACK',
-    trackId
-  }
-}
+  return (dispatch, getState) => {
+    const currentScene = getState().scenes.currentScene;
+
+    dispatch({
+      type: 'SOLO_TRACK',
+      trackId,
+      currentScene
+    })
+  }}

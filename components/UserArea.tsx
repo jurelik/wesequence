@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SequencerStore } from 'redux/rootReducer';
+import { CombinedState } from 'redux/store'
 import { Icon, Tooltip } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa';
 
@@ -15,9 +15,9 @@ const UserArea = (props) => {
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
   return {
-    users: state.users
+    users: state.root.users
   }
 }
 

@@ -1,11 +1,6 @@
-import global, { GlobalTrack, GlobalScene } from 'utils/global';
-import { findGlobalTrack, findStoreTrack } from 'utils/findTrack';
-import { findGlobalScene, findStoreScene } from 'utils/findScene';
-
 export type StoreScene = {
   id: number,
-  name?: string,
-  tracks: string[]
+  name?: string
 };
 
 export type SceneStore = {
@@ -26,48 +21,33 @@ const initialState: SceneStore = {
 }
 
 const sceneReducer = (state = initialState, action: ReduxAction) => {
-  let newState;
-  let newGlobalScene;
+  let newState: SceneStore;
 
   switch (action.type) {
     case 'INIT':
       newState = { ...state };
-      action.scenes.forEach(scene => {
+      action.scenes.forEach((scene: StoreScene) => {
         newState.byId[scene.id] = scene;
-        newState.allIds.push(scene.id.toString());
+        newState.allIds = [ ...newState.allIds, scene.id.toString() ]
         delete newState.byId[scene.id].id;
       });
       newState.currentScene = newState.allIds[0].toString();
       return newState;
     case 'CHANGE_SCENE':
-      return { ...state, currentScene: action.index };
-    case 'ADD_TRACK':
-      newState = { ...state };
-      
-      newState.byId[action.sceneId.toString()].tracks.push(action.trackId.toString());
-
-      return newState;
-    case 'DELETE_TRACK':
+      return { ...state, currentScene: action.sceneId };
+    case 'ADD_SCENE':
       newState = { ...state };
 
-      const tracks = newState.byId[action.sceneId.toString()].tracks;
-      tracks.splice(tracks.indexOf(action.trackId.toString()), 1);
+      newState.byId = { ...newState.byId, [action.sceneId.toString()]: { tracks: [] }};
+      newState.allIds = [ ...newState.allIds, action.sceneId.toString() ]
 
-      return newState;
+      return newState
     case 'DELETE_SCENE':
       newState = { ...state };
-      //newCurrentScene = state.currentScene;
 
-      //If the deleted scene index is lower than the currentScene index, decrement the currentScene value
-      //if (newStoreScenes.indexOf(newStoreScene) <= newCurrentScene && !newStoreScenes[newCurrentScene + 1]) {
-      //  newCurrentScene--;
-      //}
-
-      newGlobalScene = findGlobalScene(global.scenes, action.sceneId);
-      global.scenes.splice(global.scenes.indexOf(newGlobalScene), 1);
-
+      newState.byId = { ...newState.byId }
       delete newState.byId[action.sceneId];
-      newState.allIds.splice(newState.allIds.indexOf(action.sceneId), 1);
+      newState.allIds = newState.allIds.filter((item: string) => item !== action.sceneId);
 
       return newState;
     case 'CHANGE_SCENE_NAME':
