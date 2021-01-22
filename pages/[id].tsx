@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { CombinedState } from 'redux/store';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import global from 'utils/global';
@@ -6,7 +7,6 @@ import setupSocket from 'utils/setupSocket';
 import setupWebAudio from 'utils/setupWebAudio';
 import socketHandler from 'utils/socketHandler';
 import Sequencer from 'components/Sequencer';
-import { SequencerStore } from 'redux/rootReducer'
 import { handleInitError } from 'redux/actions';
 
 const Room = (props) => {
@@ -42,7 +42,7 @@ const Room = (props) => {
   )
 }
 
-const mapStateToProps = (state: SequencerStore) => {
+const mapStateToProps = (state: CombinedState) => {
   return {
     loading: state.root.loading,
     err: state.root.err

@@ -60,7 +60,12 @@ const sceneReducer = (state = initialState, action: ReduxAction) => {
 
       newState.byId = { ...newState.byId }
       delete newState.byId[action.sceneId];
+
+      let index = newState.allIds.indexOf(newState.currentScene);
       newState.allIds = newState.allIds.filter((item: string) => item !== action.sceneId);
+
+      //Reasign currentScene to the next scene. If deleted scene was last in the array, reassign it to the one before.
+      newState.allIds[index] ? newState.currentScene = newState.allIds[index] : newState.currentScene = newState.allIds[index - 1];
 
       return newState;
     case 'CHANGE_SCENE_NAME':

@@ -40,7 +40,7 @@ const Home = () => {
     router.push(`/${room}`);
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setRoom(e.target.value);
   }
 
