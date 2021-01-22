@@ -26,6 +26,10 @@ const sceneReducer = (state = initialState, action: ReduxAction) => {
 
   switch (action.type) {
     case 'INIT':
+      if (action.err) {
+        return state;
+      }
+
       newState = { ...state };
       action.scenes.forEach((scene: StoreScene) => {
         newState.byId[scene.id] = scene;

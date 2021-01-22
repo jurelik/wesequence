@@ -30,6 +30,10 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
 
   switch (action.type) {
     case 'INIT':
+      if (action.err) {
+        return state;
+      }
+
       newState = { ...state };
       action.tracks.forEach((track: any) => {
         const id = track.id;

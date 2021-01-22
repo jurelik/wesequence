@@ -17,7 +17,7 @@ const socketHandler = () => {
         //Handle error
         if (data.err) {
           console.log(data.err)
-          store.dispatch(handleInitError(JSON.stringify(data.err)));
+          store.dispatch(handleInitError(typeof data.err === 'object' ? JSON.stringify(data.err) : data.err));
           break;
         }
 
