@@ -41,7 +41,7 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
         //Set correct structure
         track.mute = false;
         track.solo = false;
-        track.id = undefined;
+        delete track.id;
 
         newState.byId[id] = track;
       });
@@ -50,8 +50,8 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
       newState = { ...state };
 
       newState.byId = { ...newState.byId };
-      newState.byId[action.trackId.toString()] = {
-        sceneId: action.sceneId,
+      newState.byId[action.trackId] = {
+        sceneId: action.sceneId.toString(),
         name: action.trackName,
         sequence: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         gain: 100,
@@ -75,14 +75,16 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
       delete global.tracks[action.trackId];
 
       newState.byId = { ...newState.byId }
-      delete newState.byId[action.trackId.toString()];
+      delete newState.byId[action.trackId];
       newState.allIds = newState.allIds.filter((track: string) => track !== action.trackId);
 
       return newState;
     case 'CHANGE_TRACK_NAME':
       newState = { ...state };
 
+      console.log(newState.byId[action.trackId])
       newState.byId[action.trackId].name = action.name;
+      console.log(newState.byId[action.trackId])
 
       return newState;
     case 'CHANGE_SOUND':
@@ -90,7 +92,7 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
 
       global.tracks[action.trackId].buffer = action.audiobuffer;
 
-      newState.byId[action.trackId.toString()].url = action.url;
+      newState.byId[action.trackId].url = action.url;
 
       return newState;
     case 'CHANGE_GAIN':
@@ -98,7 +100,7 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
 
       global.tracks[action.trackId].gain.gain.value = 1 / 127 * action.gain;
 
-      newState.byId[action.trackId.toString()].gain = action.gain;
+      newState.byId[action.trackId].gain = action.gain;
 
       return newState;
     case 'SEQ_BUTTON_PRESS':
@@ -111,14 +113,14 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
     case 'MUTE_TRACK':
       newState = { ...state };
 
-      newState.byId[action.trackId.toString()].mute = !newState.byId[action.trackId.toString()].mute;
+      newState.byId[action.trackId].mute = !newState.byId[action.trackId].mute;
 
       return newState;
     case 'SOLO_TRACK':
       newState = { ...state };
 
       for (let track in newState.byId) {
-        if (newState.byId[track].sceneId.toString() !== action.currentScene) {
+        if (newState.byId[track].sceneId !== action.currentScene) {
           continue;
         }
         if (track === action.trackId) {

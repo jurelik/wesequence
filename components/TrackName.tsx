@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { CombinedState } from 'redux/store';
-import { Flex, Icon, IconButton, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
+import { Text, Flex, Icon, IconButton, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
 import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import { removeListener, addListener } from 'utils/handlePlayStop';
 import { changeTrackName } from 'redux/actions';
@@ -37,11 +37,11 @@ const TrackName = (props: any) => {
       ml="3px"
       fontWeight="bold"
     >
-      {(props) => (
+      {(_props) => (
         <Flex direction="row" alignItems="center">
-          <EditablePreview />
+          <Text paddingY="3px" style={{ display: _props.isEditing ? 'none' : null }}>{props.name}</Text>
           <EditableInput w={100} onFocus={removeListener}/>
-          <EditableControls {...props} />
+          <EditableControls {..._props} />
         </Flex>
       )}
     </Editable>
