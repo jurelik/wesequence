@@ -88,7 +88,7 @@ const socketHandler = () => {
       case 'CHANGE_SOUND':
         //Create buffer
         const arraybuffer = stringToArraybuffer(data.arraybuffer);
-        store.dispatch(changeSoundReceive(data.trackId, arraybuffer));
+        store.dispatch(changeSoundReceive(data.trackId, arraybuffer, data.url));
         break;
       case 'CHANGE_TEMPO':
         store.dispatch(changeTempo(data.tempo, false));

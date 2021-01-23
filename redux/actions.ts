@@ -75,7 +75,7 @@ export const changeSoundSend = (trackId: number, file: File) => {
   }
 }
 
-export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) => {
+export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer, url: string) => {
   return async (dispatch) => {
     try {
       const audiobuffer = await global.context.decodeAudioData(arraybuffer);
@@ -83,7 +83,8 @@ export const changeSoundReceive = (trackId: number, arraybuffer: ArrayBuffer) =>
       dispatch({
         type: 'CHANGE_SOUND',
         trackId,
-        audiobuffer
+        audiobuffer,
+        url
       });
     }
     catch (err) {
