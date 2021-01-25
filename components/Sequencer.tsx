@@ -5,6 +5,7 @@ import Transport from 'components/Transport';
 import SceneArea from 'components/SceneArea';
 import DownloadButton from 'components/DownloadButton';
 import UserArea from 'components/UserArea';
+import AddTrackButton from 'components/AddTrackButton';
 
 const Sequencer = (props: any) => {
   return (
@@ -28,6 +29,7 @@ const Sequencer = (props: any) => {
             )
           }
         })}
+        <AddTrackButton />
       </main>
     </div>
   )
