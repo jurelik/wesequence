@@ -41,6 +41,7 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
         //Set correct structure
         track.mute = false;
         track.solo = false;
+        track.sceneId = track.sceneId.toString();
         delete track.id;
 
         newState.byId[id] = track;
