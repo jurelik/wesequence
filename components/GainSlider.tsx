@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
+import { Slider, SliderTrack, SliderFilledTrack, SliderThumb, Tooltip } from '@chakra-ui/react';
 import { CombinedState } from 'redux/store';
 import { changeGain } from 'redux/actions';
 
@@ -13,7 +13,9 @@ const GainSlider = (props: any) => {
       <SliderTrack>
         <SliderFilledTrack />
       </SliderTrack>
-      <SliderThumb />
+      <Tooltip label={props.gain}>
+        <SliderThumb />
+      </Tooltip>
     </Slider>
   )
 }
