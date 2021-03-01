@@ -212,6 +212,24 @@ export const deleteScene = (send: boolean, sceneId: number) => {
   }
 }
 
+export const duplicateScene = (send: boolean, sceneId: number, scene: object, tracks: any[] ) => {
+  // Send action via ws
+  if (send) {
+    global.socket.send(JSON.stringify({
+      type: 'DUPLICATE_SCENE',
+      sceneId
+    }));
+
+    return { type: 'DEFAULT' }; // Ignore action
+  }
+
+  return {
+    type: 'DUPLICATE_SCENE',
+    scene,
+    tracks
+  }
+}
+
 export const changeSceneName = (sceneId: number, name: string,  send: boolean) => {
   // Send action via ws
   if (send) {

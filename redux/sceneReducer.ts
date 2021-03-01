@@ -72,6 +72,13 @@ const sceneReducer = (state = initialState, action: ReduxAction) => {
       newState.allIds[index] ? newState.currentScene = newState.allIds[index] : newState.currentScene = newState.allIds[index - 1];
 
       return newState;
+    case 'DUPLICATE_SCENE':
+      newState = { ...state };
+
+      newState.byId = { ...newState.byId, [action.scene.id.toString()]: action.scene};
+      newState.allIds = [ ...newState.allIds, action.scene.id.toString() ]
+
+      return newState
     case 'CHANGE_SCENE_NAME':
       newState = { ...state };
 

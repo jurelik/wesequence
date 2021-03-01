@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { Button, Input } from '@chakra-ui/react';
+import { Button, Input, Heading } from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import store from 'redux/store';
 import global from 'utils/global';
@@ -46,12 +46,15 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <Button size="sm" onClick={handleCreateRoom}>Create a Room</Button>
-      <p>or</p>
-      <form style={{ display: 'flex' }} onSubmit={handleJoinRoom}>
-        <Input size="sm" flex={1} value={room} onChange={handleInputChange}/>
-        <Button size="sm" flex={1} type="submit">Join a Room</Button>
-      </form>
+      <Heading>WESEQUENCE</Heading>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '300px' }}>
+        <Button size="sm" style={{ width: '100%' }} onClick={handleCreateRoom}>Create a Room</Button>
+        <p>or</p>
+        <form style={{ display: 'flex' }} onSubmit={handleJoinRoom}>
+          <Input size="sm" flex={2} value={room} onChange={handleInputChange}/>
+          <Button size="sm" flex={1} type="submit">Join a Room</Button>
+        </form>
+      </div>
     </div>
   )
 }

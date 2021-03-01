@@ -45,6 +45,7 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
         delete track.id;
 
         newState.byId[id] = track;
+        newState.allIds = [ ...newState.allIds, id.toString() ];
       });
       return newState;
     case 'ADD_TRACK':
@@ -133,6 +134,22 @@ const trackReducer = (state = initialState, action: ReduxAction) => {
       }
 
       return newState;
+    case 'DUPLICATE_SCENE':
+      newState = { ...state };
+      action.tracks.forEach((track: any) => {
+        const id = track.id;
+
+        //Set correct structure
+        track.mute = false;
+        track.solo = false;
+        track.sceneId = track.sceneId.toString();
+        delete track.id;
+
+        newState.byId[id] = track;
+        newState.allIds = [ ...newState.allIds, id.toString() ];
+      });
+
+      return newState
     default:
       return state;
   }

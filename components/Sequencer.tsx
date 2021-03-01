@@ -31,6 +31,9 @@ const Sequencer = (props: any) => {
         })}
         <AddTrackButton />
       </main>
+      <footer style={{ position: 'fixed', bottom: 0, display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <p style={{ fontWeight: 'bold', fontSize: 14, marginBottom: '2px' }}>Made with love for 2HTS</p>
+      </footer>
     </div>
   )
 }
