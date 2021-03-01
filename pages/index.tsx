@@ -46,13 +46,13 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <Heading>WESEQUENCE</Heading>
+      <Heading style={{ display: 'flex', alignItems: 'center', fontStyle: 'italic', fontWeight: 800, height: '100px' }}>WESEQUENCE</Heading>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '300px' }}>
         <Button size="sm" style={{ width: '100%' }} onClick={handleCreateRoom}>Create a Room</Button>
-        <p>or</p>
-        <form style={{ display: 'flex' }} onSubmit={handleJoinRoom}>
+        <p style={{ fontWeight: 600, marginTop: '3px', marginBottom: '3px' }}>- or -</p>
+        <form style={{ display: 'flex', alignSelf: 'center', marginBottom: '100px' }} onSubmit={handleJoinRoom}>
           <Input size="sm" flex={2} value={room} onChange={handleInputChange}/>
-          <Button size="sm" flex={1} type="submit">Join a Room</Button>
+          <Button size="sm" flex={1} type="submit" ml="5px">Join a Room</Button>
         </form>
       </div>
     </div>

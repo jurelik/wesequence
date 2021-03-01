@@ -6,6 +6,8 @@ import SceneArea from 'components/SceneArea';
 import DownloadButton from 'components/DownloadButton';
 import UserArea from 'components/UserArea';
 import AddTrackButton from 'components/AddTrackButton';
+import { Icon, Link } from '@chakra-ui/react';
+import { FaHeart } from 'react-icons/fa';
 
 const Sequencer = (props: any) => {
   return (
@@ -31,8 +33,8 @@ const Sequencer = (props: any) => {
         })}
         <AddTrackButton />
       </main>
-      <footer style={{ position: 'fixed', bottom: 0, display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <p style={{ fontWeight: 'bold', fontSize: 14, marginBottom: '2px' }}>Made with love for 2HTS</p>
+      <footer style={{ position: 'fixed', bottom: 0, display: 'flex', justifyContent: 'center', width: '100%', backgroundColor: '#eee' }}>
+        <p style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', fontSize: 14, marginBottom: '2px' }}>Made with <Icon as={FaHeart} mx="3px" color="red.600" /> for <Link href="http://compo.thasauce.net/compos/view/2HTS" mx="3px" color="teal.600">2HTS</Link></p>
       </footer>
     </div>
   )

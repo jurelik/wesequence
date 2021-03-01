@@ -40,8 +40,8 @@ const Transport = (props) => {
       >
         <NumberInputField />
         <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
+          <NumberIncrementStepper bg='grey.100' />
+          <NumberDecrementStepper bg='grey.100' />
         </NumberInputStepper>
       </NumberInput>
     </div>

@@ -8,6 +8,7 @@ import setupWebAudio from 'utils/setupWebAudio';
 import socketHandler from 'utils/socketHandler';
 import Sequencer from 'components/Sequencer';
 import { handleInitError } from 'redux/actions';
+import { Spinner } from '@chakra-ui/react';
 
 const Room = (props) => {
   const router = useRouter();
@@ -32,9 +33,11 @@ const Room = (props) => {
   }, [router])
 
   return (
-    <div>
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#eee' }}>
       {props.loading ?
-        <p>loading</p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100vw', height: '100vh' }}>
+          <Spinner size="xl" />
+        </div>
         : props.err ?
          <p>{props.err}</p>
         : <Sequencer />}
