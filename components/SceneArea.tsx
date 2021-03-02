@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { CombinedState } from 'redux/store';
-import { Icon, IconButton } from '@chakra-ui/react';
+import { Flex, Icon, IconButton } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
 import SceneButton from 'components/SceneButton';
 import { addScene } from 'redux/actions';
@@ -11,12 +11,12 @@ const SceneArea = (props) => {
   }
 
   return (
-    <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10, overflow: 'auto', whiteSpace: 'nowrap' }}>
+    <Flex style={{ marginBottom: 5, marginLeft: 10 }} wrap='wrap'>
       {props.oneOrMoreScenes ? props.allIds.map((scene: string, index: number) => (
         <SceneButton key={index} index={index} sceneId={scene} />
       )) : null}
       <IconButton aria-label="Add Scene" size="sm" onClick={handleAddSceneButton} icon={<Icon as={FaPlus} />} />
-    </div>
+    </Flex>
   )
 }
 

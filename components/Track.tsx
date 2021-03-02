@@ -32,11 +32,11 @@ const Track = (props: any) => {
         </Flex>
         <GainSlider trackId={props.trackId}/>
         <LoadSound trackId={props.trackId} />
-        <div style={{ marginLeft: 'auto' }}>
-          <Button size="xs" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.mute ? 'red' : null}>M</Button>
-          <Button size="xs" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.solo ? 'yellow' : null}>S</Button>
-          <IconButton aria-label="Delete Track" size="xs" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
-        </div>
+        <Flex style={{ marginLeft: 'auto' }} flexDir={['column', 'row']}>
+          <Button size="xs" m="2px" onClick={handleMuteButton} fontWeight="bold" colorScheme={props.mute ? 'red' : null}>M</Button>
+          <Button size="xs" m="2px" onClick={handleSoloButton} fontWeight="bold" colorScheme={props.solo ? 'yellow' : null}>S</Button>
+          <IconButton aria-label="Delete Track" size="xs" m="2px" onClick={handleDeleteButton} icon={<Icon as={FaTimes} />} />
+        </Flex>
       </Flex>
     </div>
   )
