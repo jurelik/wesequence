@@ -4,7 +4,7 @@ import { CombinedState } from 'redux/store';
 import { changeGain } from 'redux/actions';
 
 const GainSlider = (props: any) => {
-  const orientation = useBreakpointValue({ base: 'vertical', sm: 'horizontal', md: 'horizontal' })
+  const orientation: "vertical" | "horizontal" = useBreakpointValue({ base: 'vertical', sm: 'horizontal', md: 'horizontal' })
   const handleGainChange = (value: number) => {
     props.changeGain(props.trackId, value, true);
   }
