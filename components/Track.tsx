@@ -22,14 +22,14 @@ const Track = (props: any) => {
   }
 
   return (
-    <div style={{ marginBottom: 10, marginLeft: 10 }}>
+    <div style={{ marginBottom: 5, marginLeft: 10 }}>
       <TrackName trackId={props.trackId} />
       <Flex alignItems="center" justifyContent="flex-start">
-        <div>
+        <Flex w={["163px", "323px", "auto"]} wrap='wrap' minW="163px">
         {props.sequence.map((step: number, index: number) => (
           <SequenceButton key={index} index={index} trackId={props.trackId}/>
         ))}
-        </div>
+        </Flex>
         <GainSlider trackId={props.trackId}/>
         <LoadSound trackId={props.trackId} />
         <div style={{ marginLeft: 'auto' }}>

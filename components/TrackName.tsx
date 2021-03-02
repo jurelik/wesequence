@@ -33,7 +33,6 @@ const TrackName = (props: any) => {
       submitOnBlur={false}
       onSubmit={handleSubmit}
       onCancel={handleClose}
-      mb="1px"
       ml="3px"
       fontWeight="bold"
     >

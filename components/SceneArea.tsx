@@ -11,7 +11,7 @@ const SceneArea = (props) => {
   }
 
   return (
-    <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10 }}>
+    <div style={{ display: 'flex', marginBottom: 10, marginLeft: 10, overflow: 'auto', whiteSpace: 'nowrap' }}>
       {props.oneOrMoreScenes ? props.allIds.map((scene: string, index: number) => (
         <SceneButton key={index} index={index} sceneId={scene} />
       )) : null}

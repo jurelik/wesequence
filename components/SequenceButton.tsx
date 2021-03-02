@@ -9,7 +9,7 @@ const SequenceButton = (props: any) => {
   }
 
   return (
-    <Button size="sm" w="2vw" h="2vw" minW={8} minH={8} mx={1} boxShadow="base" colorScheme={props.value === 1 ? 'blue' : null}onClick={handleOnClick}></Button>
+    <Button size="sm" w="2vw" h="2vw" minW={8} minH={8} mx={1} my={1} boxShadow="base" colorScheme={props.value === 1 ? 'blue' : null}onClick={handleOnClick}></Button>
   )
 }
 

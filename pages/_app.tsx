@@ -2,7 +2,17 @@ import "focus-visible/dist/focus-visible";
 import '../styles/globals.css';
 import { Provider  } from "react-redux";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { createBreakpoints } from "@chakra-ui/theme-tools"
 import store from "redux/store";
+
+// This is the default breakpoint
+const breakpoints = createBreakpoints({
+  sm: "45em",
+  md: "66em",
+  lg: "72em",
+  xl: "80em",
+  "2xl": "90em",
+})
 
 const theme = extendTheme({
   components: {
@@ -44,7 +54,8 @@ const theme = extendTheme({
         color: "#222",
       }
     }
-  }
+  },
+  breakpoints
 });
 
 
